@@ -38,7 +38,6 @@ function handleAllTasksFilterClick() {
     saveToLocalStorage();
     renderTasks();
     renderPagination();
-
 }
 
 function handleDoneFilterClick() {
