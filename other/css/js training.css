@@ -1,0 +1,31 @@
+   .important-item {
+        color: red;
+        font-size: 20px;
+        border: red 2px solid;}
+
+   .large {
+        font-size: 50px;
+        }
+
+   .form-registration {
+       display: flex;
+       flex-direction: column;
+       font-family: Arial Serif;
+       font-size: 15px;
+       width: 150px;
+   }
+
+   .error-input {
+       border: red 2px solid;
+   }
+
+   #picture-link {
+       width: 150px;
+       height: auto;
+   }
+
+   .hidden {
+       display: none;
+   }
+
+
