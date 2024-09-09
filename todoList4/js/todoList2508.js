@@ -4,49 +4,39 @@ const ButtonCreateTask = document.querySelector('.createTask_btn');
 const taskList = document.querySelector('#taskList');
 
 
-
 TaskInputForm.addEventListener('submit', handleAddTasks);
 ButtonCreateTask.addEventListener('click', handleAddTasks);
 taskList.addEventListener('click', deleteTask);
 taskList.addEventListener('click', doneTask);
 taskList.addEventListener('click', addToFavorites);
 
+function render() {
+    renderTasks();
+    renderPagination();
+    renderFilters();
+}
 
 function handleFavoritesFilterClick() {
     state.filter = 'favorites';
-    favoritesTasksBtn.classList.add('section-active');
-    allTasksBtn.classList.remove('section-active');
-    doneTasksBtn.classList.remove('section-active');
     state.currentPage = 1;
     saveToLocalStorage();
-    renderTasks();
-    renderPagination();
-
+    render();
 
 }
 
 function handleAllTasksFilterClick() {
     state.filter = 'all';
-    allTasksBtn.classList.add('section-active');
-    favoritesTasksBtn.classList.remove('section-active');
-    doneTasksBtn.classList.remove('section-active');
     state.currentPage = 1;
     saveToLocalStorage();
-    renderTasks();
-    renderPagination();
+    render();
 
 }
 
 function handleDoneFilterClick() {
     state.filter = 'completed';
-    doneTasksBtn.classList.add('section-active');
-    allTasksBtn.classList.remove('section-active');
-    favoritesTasksBtn.classList.remove('section-active');
     state.currentPage = 1;
     saveToLocalStorage();
-    renderTasks();
-    renderPagination();
-
+    render();
 
 }
 
@@ -55,16 +45,13 @@ const rowsPerPage = 5;
 let state = {
     tasks: [],
     currentPage: 1,
-    filter: 'all' // 'all' || 'favorites' || 'completed'
+    filter: 'all'
 }
 
 
 if (localStorage.getItem('state')) {
-
     state = JSON.parse(localStorage.getItem('state'));
-    renderTasks();
-    renderFilters();
-    renderPagination();
+    render();
 
 }
 
@@ -206,7 +193,6 @@ function renderTasks() {
                 </div>
             </li>`;
 
-
         taskList.insertAdjacentHTML('beforeend', taskHTML);
     });
     changeStatus();
@@ -221,6 +207,7 @@ function renderFilters() {
     const cssFav = state.filter === 'favorites' ? 'section-active' : '';
     const cssCompleted = state.filter === 'completed' ? 'section-active' : '';
 
+    sectionsList.innerHTML = '';
 
     const sectionElHTML = `
         <div class='section all ${cssAll}'>Все задачи</div>
@@ -229,17 +216,15 @@ function renderFilters() {
 
     sectionsList.insertAdjacentHTML('beforeend', sectionElHTML);
 
-
-
-}
-
- const favoritesTasksBtn = document.querySelector('.favorites');
+    const favoritesTasksBtn = document.querySelector('.favorites');
     const allTasksBtn = document.querySelector('.all');
     const doneTasksBtn = document.querySelector('.completed');
 
     favoritesTasksBtn.addEventListener('click', handleFavoritesFilterClick);
     allTasksBtn.addEventListener('click', handleAllTasksFilterClick);
     doneTasksBtn.addEventListener('click', handleDoneFilterClick);
+}
+
 
 //добавление кнопки
 function renderPagination() {
@@ -254,7 +239,6 @@ function renderPagination() {
     for (let i = 0; i < countOfPages; i++) {
         const pageBtnHTML = displayPaginationBtn(i + 1);
         paginationEl.appendChild(pageBtnHTML);
-
     }
 
     saveToLocalStorage();
@@ -300,8 +284,6 @@ function changeStatus() {
 }
 
 
-//т.е. надо создать функцию, где при нажатии на звездочку добавлялся класс с избранным
-// изменить визуал звездочки
 
 
 
