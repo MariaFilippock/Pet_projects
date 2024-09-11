@@ -49,6 +49,8 @@ function handleResultClick() {
         result = Number(state.firstArg) * Number(state.secondArg);
     } else if (state.operator === '÷') {
         result = Number(state.firstArg) / Number(state.secondArg);
+    } else if (state.operator === '%') {
+        result = Number(state.firstArg) / 100;
     }
 
     state.firstArg = result;
