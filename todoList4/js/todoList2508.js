@@ -2,6 +2,9 @@ const TaskInputForm = document.querySelector('#form');
 const TaskInput = document.querySelector('.createTask_input');
 const ButtonCreateTask = document.querySelector('.createTask_btn');
 const taskList = document.querySelector('#taskList');
+const favoritesTasksBtn = document.querySelector('.favorites');
+const allTasksBtn = document.querySelector('.all');
+const doneTasksBtn = document.querySelector('.completed');
 
 
 TaskInputForm.addEventListener('submit', handleAddTasks);
@@ -9,34 +12,44 @@ ButtonCreateTask.addEventListener('click', handleAddTasks);
 taskList.addEventListener('click', deleteTask);
 taskList.addEventListener('click', doneTask);
 taskList.addEventListener('click', addToFavorites);
-
-function render() {
-    renderTasks();
-    renderPagination();
-    renderFilters();
-}
+favoritesTasksBtn.addEventListener('click', handleFavoritesFilterClick);
+allTasksBtn.addEventListener('click', handleAllTasksFilterClick);
+doneTasksBtn.addEventListener('click', handleDoneFilterClick);
 
 function handleFavoritesFilterClick() {
     state.filter = 'favorites';
+    favoritesTasksBtn.classList.add('section-active');
+    allTasksBtn.classList.remove('section-active');
+    doneTasksBtn.classList.remove('section-active');
     state.currentPage = 1;
     saveToLocalStorage();
-    render();
+    renderTasks();
+    renderPagination();
+
 
 }
 
 function handleAllTasksFilterClick() {
     state.filter = 'all';
+    allTasksBtn.classList.add('section-active');
+    favoritesTasksBtn.classList.remove('section-active');
+    doneTasksBtn.classList.remove('section-active');
     state.currentPage = 1;
     saveToLocalStorage();
-    render();
+    renderTasks();
+    renderPagination();
 
 }
 
 function handleDoneFilterClick() {
     state.filter = 'completed';
+    doneTasksBtn.classList.add('section-active');
+    allTasksBtn.classList.remove('section-active');
+    favoritesTasksBtn.classList.remove('section-active');
     state.currentPage = 1;
     saveToLocalStorage();
-    render();
+    renderTasks();
+    renderPagination();
 
 }
 
@@ -45,13 +58,15 @@ const rowsPerPage = 5;
 let state = {
     tasks: [],
     currentPage: 1,
-    filter: 'all'
+    filter: 'all' // 'all' || 'favorites' || 'completed'
 }
 
 
 if (localStorage.getItem('state')) {
+
     state = JSON.parse(localStorage.getItem('state'));
-    render();
+    renderTasks();
+    renderPagination();
 
 }
 
@@ -84,6 +99,7 @@ function handleAddTasks(event) {
 
 function deleteTask(event) {
     if (event.target.dataset.action !== 'delete') return;
+
 
     let parentNode = event.target.closest('.list_item');
 
@@ -125,9 +141,7 @@ function addToFavorites(event) {
     if (event.target.dataset.action !== 'favorites') return;
 
     let parentNode = event.target.closest('.list_item');
-
     let id = Number(parentNode.id);
-
     let task = state.tasks.find((el) => el.id === id);
 
     task.favorites = !task.favorites;
@@ -143,21 +157,23 @@ function saveToLocalStorage() {
 }
 
 
+
 function sortLists() {
     let todos = [];
-    if (state.filter === 'completed') {
-        todos = state.tasks.filter((el) => {
-            return el.done;
-        })
-    } else if (state.filter === 'favorites') {
-        todos = state.tasks.filter((el) => {
-            return el.favorites;
-        })
-    } else if (state.filter === 'all') {
-        todos = state.tasks;
-    }
-    return todos;
+     if (state.filter === 'completed') {
+            todos = state.tasks.filter((el) => {
+                return el.done;
+            })
+        } else if (state.filter === 'favorites') {
+            todos = state.tasks.filter((el) => {
+                return el.favorites;
+            })
+        } else if (state.filter === 'all') {
+            todos = state.tasks;
+        }
+     return todos;
 }
+
 
 
 function renderTasks() {
@@ -174,7 +190,6 @@ function renderTasks() {
 
     todosToRender.forEach(task => {
         const cssClass = task.done ? 'task_title done' : 'task_title';
-
         const cssClassFav = task.favorites ? 'bi bi-star-fill' : 'bi bi-star';
 
 
@@ -193,38 +208,11 @@ function renderTasks() {
                 </div>
             </li>`;
 
+
         taskList.insertAdjacentHTML('beforeend', taskHTML);
     });
     changeStatus();
-
 }
-
-
-function renderFilters() {
-    const sectionsList = document.querySelector('.sections_list');
-
-    const cssAll = state.filter === 'all' ? 'section-active' : '';
-    const cssFav = state.filter === 'favorites' ? 'section-active' : '';
-    const cssCompleted = state.filter === 'completed' ? 'section-active' : '';
-
-    sectionsList.innerHTML = '';
-
-    const sectionElHTML = `
-        <div class='section all ${cssAll}'>Все задачи</div>
-        <div class='section favorites ${cssFav}'>Избранное</div>
-        <div class='section completed ${cssCompleted}'>Выполненные</div>`;
-
-    sectionsList.insertAdjacentHTML('beforeend', sectionElHTML);
-
-    const favoritesTasksBtn = document.querySelector('.favorites');
-    const allTasksBtn = document.querySelector('.all');
-    const doneTasksBtn = document.querySelector('.completed');
-
-    favoritesTasksBtn.addEventListener('click', handleFavoritesFilterClick);
-    allTasksBtn.addEventListener('click', handleAllTasksFilterClick);
-    doneTasksBtn.addEventListener('click', handleDoneFilterClick);
-}
-
 
 //добавление кнопки
 function renderPagination() {
@@ -239,11 +227,13 @@ function renderPagination() {
     for (let i = 0; i < countOfPages; i++) {
         const pageBtnHTML = displayPaginationBtn(i + 1);
         paginationEl.appendChild(pageBtnHTML);
+
     }
 
     saveToLocalStorage();
 
 }
+
 
 //создание и отрисовка кнопки
 function displayPaginationBtn(page) {
@@ -284,10 +274,5 @@ function changeStatus() {
 }
 
 
-
-
-
-
-
-
-
+//т.е. надо создать функцию, где при нажатии на звездочку добавлялся класс с избранным
+// изменить визуал звездочки

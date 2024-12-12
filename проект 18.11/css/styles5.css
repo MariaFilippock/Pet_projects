@@ -1,0 +1,80 @@
+/**
+ * Базовые стили для всего сайта
+ */
+body {
+	position: relative;
+	font-family: 'Noto Sans', sans-serif;
+	font-size: 16px;
+	line-height: 1.4;
+	color: #000;
+	min-width: 320px;
+	overflow-x: hidden;
+	height: auto;
+}
+
+
+/**
+ * Другие стили
+ */
+
+.form-group {
+	position: relative;
+	margin-bottom: 10px;
+
+}
+
+.form-control {
+	width: 100%;
+	display: block;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 9px 10px;
+	font-size: 14px;
+	transition: all .09s ease-in-out;
+}
+
+label {
+	position: absolute;
+	display: block;
+	top: 9px;
+	left: 10px;
+	cursor: text;
+	font-size: 14px;
+	background-color: #fff;
+	transition: all .09s ease-in-out;
+}
+
+.form-control:focus {
+	outline: none;
+	border-color: coral;
+	box-shadow: 0 0 3px rgba(255, 127, 80, .6) ;
+}
+
+.form-control:focus ~ label {
+	top: -9px;
+	color: coral;
+	font-size: 12px;
+}
+
+.form-control:valid ~ label {
+	top: -9px;
+	font-size: 12px;
+}
+
+
+.btn-main {
+	display: inline-block;
+	padding: 10px 25px;
+	font-size: 14px;
+	color: #fff;
+	background-color: coral;
+	text-decoration: none;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.text-center {
+	text-align: center;
+}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WeatherApp</title>
+    <link rel="stylesheet" href="weatherApp.css">
+
+</head>
+<body>
+
+<div class="container_main">
+    <div class="search_header">
+        <span class="search_title">Прогноз погоды</span>
+
+        <form id="search_form">
+            <input class="search_input" type="text" placeholder="Введите название города"/>
+            <button class="search_btn" type="submit">Поиск</button>
+            <button class='switchTemp_btn' type='button' data-action='switch'>℉/°C</button>
+        </form>
+
+    </div>
+
+    <div class="err_message" id="error_block"></div>
+
+    <div class="clearAll" data-action="clearAll">Очистить всё</div>
+
+    <div class='mask' id="page_preloader">
+        <div class = 'loader'></div>
+    </div>
+
+    <div class="cards_container">
+
+    </div>
+
+
+</div>
+
+<script src="weatherApp.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+

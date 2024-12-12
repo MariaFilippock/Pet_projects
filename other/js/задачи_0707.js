@@ -190,6 +190,16 @@ function wdv(elem) {
 console.log(wdv(strWithLetters));
 
 
+//вернуть массив с числами, кратными их индексу
+
+function multipleOfIndex(array) {
+  return array.filter((num, index) =>  num % index === 0)
+ // return newAr;
+}
+
+console.log(multipleOfIndex([22, -6, 32, 82, 9, 25]));
+
+
 
 
 

@@ -3,12 +3,13 @@ const btnNumber = document.querySelectorAll('.number');
 const btnAction = document.querySelectorAll('.button_action');
 const btnEqual = document.querySelector('.equal');
 const btnReset = document.querySelector('.button_reset');
-
+const btnComma = document.querySelector('.comma');
 
 btnNumber.forEach((el) => el.addEventListener('click', handleNumberClick));
 btnAction.forEach((el) => el.addEventListener('click', handleSignClick));
 btnEqual.addEventListener('click', handleResultClick);
 btnReset.addEventListener('click', handleResetClick);
+btnComma.addEventListener('click', handleCommaClick);
 
 let state = {
     firstArg: '',
@@ -16,8 +17,10 @@ let state = {
     operator: '' // '-', '/', '*', '%', '+'
 }
 
+
 //ф-ция, которая должна что-то делать если нажали на ЧИСЛО
 function handleNumberClick(event) {
+
     if (state.operator) {
         state.secondArg += event.target.innerText;
     } else {
@@ -28,20 +31,22 @@ function handleNumberClick(event) {
 
 //ф-ция, которая должна что-то делать если нажали на ЗНАК ДЕЙСТВИЯ
 function handleSignClick(event) {
+
     state.operator = event.target.innerText;
 
     renderDisplay();
 }
 
 function renderDisplay() {
-    inputCalculator.value = `${state.firstArg} ${state.operator} ${state.secondArg}`;
+    const resultHTML = `${state.firstArg}${state.operator}${state.secondArg}`;
+    inputCalculator.value = resultHTML.toString().replace('.',',');
+    console.log(state);
 
 }
 
 
 function handleResultClick() {
     let result = 0;
-    if (state.operator === '-') {
         result = Number(state.firstArg) - Number(state.secondArg);
     } else if (state.operator === '+') {
         result = Number(state.firstArg) + Number(state.secondArg);
@@ -69,3 +74,13 @@ function handleResetClick() {
     renderDisplay();
 }
 
+function handleCommaClick() {
+
+    if (state.operator) {
+        state.secondArg += '.';
+    } else {
+        state.firstArg += '.';
+    }
+    renderDisplay();
+
+}
