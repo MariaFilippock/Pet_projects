@@ -100,6 +100,7 @@ function handleAddTasks(event) {
 function deleteTask(event) {
     if (event.target.dataset.action !== 'delete') return;
 
+
     let parentNode = event.target.closest('.list_item');
 
     let id = Number(parentNode.id);
@@ -140,9 +141,7 @@ function addToFavorites(event) {
     if (event.target.dataset.action !== 'favorites') return;
 
     let parentNode = event.target.closest('.list_item');
-
     let id = Number(parentNode.id);
-
     let task = state.tasks.find((el) => el.id === id);
 
     task.favorites = !task.favorites;
@@ -191,7 +190,6 @@ function renderTasks() {
 
     todosToRender.forEach(task => {
         const cssClass = task.done ? 'task_title done' : 'task_title';
-
         const cssClassFav = task.favorites ? 'bi bi-star-fill' : 'bi bi-star';
 
 
@@ -278,10 +276,3 @@ function changeStatus() {
 
 //т.е. надо создать функцию, где при нажатии на звездочку добавлялся класс с избранным
 // изменить визуал звездочки
-
-
-
-
-
-
-

@@ -113,14 +113,11 @@ console.log(createBigSmallWord(arrOfStr));
 //2 вариант
 
 function createBigSmallWord2(str) {
- let arrOfStr = Array.from(str);
 
- let arrayOfBigSmall = arrOfStr.map(function (letter, index) {
+ let arrayOfBigSmall = Array.from(str).map((letter, index) => {
   if (index % 2 === 0) {
    return letter.toUpperCase()
-  } else {
-   return letter
-  }
+  } else { return letter }
  })
 
  return arrayOfBigSmall.join('');
@@ -203,7 +200,7 @@ function sumEvenEl(arr) {
     let SumEven = 0;
     let SumOdd = 0;
     for (let i = 0; i < arr.length; i++) {
-        if (i % 2 == 0) {
+        if (i % 2 === 0) {
             SumEven += arr[i];
         } else {
             SumOdd += arr[i];
@@ -220,7 +217,7 @@ function sumEvenEl2(arr) {
     let SumOdd = 0;
 
     arr.forEach(function (el, ind) {
-        if (ind % 2 == 0) {
+        if (ind % 2 === 0) {
             SumEven += arr[ind];
         } else {
                 SumOdd += arr[ind];

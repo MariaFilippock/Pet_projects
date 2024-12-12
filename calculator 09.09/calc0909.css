@@ -1,0 +1,89 @@
+body {
+    background-color: black;
+    font-size: 20px;
+    font-family: 'Roboto' , sans-serif;
+    color: white;
+}
+
+.container_calculator {
+    border: 1px solid grey;
+    margin: 50px;
+    padding: 0;
+    border-radius: 3px;
+    width: 500px;
+    background: rgba(255, 255, 255, .2);
+
+}
+
+
+
+.input_calculator {
+
+    background: #18181a;
+    color: white;
+    width: 100%;
+    border: 1px solid grey;
+    /*border: 0 solid transparent;*/
+    height: 60px;
+    font-size: 40px;
+    text-align: right;
+    position: relative;
+    box-sizing: border-box;
+    /*margin-top: 5px;*/
+    padding: 10px 24px 10px;
+
+}
+
+.calculator_buttons {
+    display: grid;
+    column-gap: 1px;
+    row-gap: 1px;
+    grid-template-columns: repeat(4, 1fr);
+    color: white;
+
+
+}
+
+.button {
+    position: relative;
+    display: inline-block;
+    background: #18181a;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    border-width: 0;
+    height: 48px;
+    font-size: 20px;
+    }
+
+.button_reset {
+   grid-column: span 2;
+   background-color: rgba(230, 247, 255, 0.44);
+   color: #18181a;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    border-width: 0;
+    height: 48px;
+    font-size: 20px;
+
+}
+
+
+.zero {
+    grid-column: span 2;
+}
+
+.button_action {
+    background-color: rgba(255, 165, 0, 0.68);
+       color: #18181a;
+
+
+}
