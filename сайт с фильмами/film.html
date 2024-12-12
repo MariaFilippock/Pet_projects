@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Фильмопоиск</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="film.css">
+</head>
+<body>
+
+<div class="container">
+    <nav class="navbar">
+        <div class="search-container">
+            <div href="#" class="nav-brand">Фильмопоиск</div>
+            <div class="form-search">
+                <input id="search-input" type="text" placeholder="Фильмы" autocomplete="off">
+                <div class="btn-search"><ion-icon name="search-outline"></ion-icon></div>
+                <div id="dropdown-container"></div>
+            </div>
+
+
+        </div>
+    </nav>
+
+    <div class="wrapper">
+
+<!--        <div class="wrapper-col-1">-->
+<!--            <img src="poster.jpg" alt="Логан (2017)"> &lt;!&ndash;${poster.url}&ndash;&gt;  &lt;!&ndash;${name, year}&ndash;&gt;-->
+<!--        </div>-->
+<!--        &lt;!&ndash;wrapper-col-1&ndash;&gt;-->
+
+<!--        <div class="wrapper-col-2">-->
+<!--            <h1 class="title">Логан (2017)</h1> &lt;!&ndash;${name}&ndash;&gt; &lt;!&ndash;(${year})&ndash;&gt;-->
+<!--            <h6 class="subtitle">Logan 18+</h6> &lt;!&ndash;${alternativeName}&ndash;&gt; &lt;!&ndash;${ageRating}+&ndash;&gt;-->
+<!--            <p class="description">Теряющий неуязвимость Росомаха спасает девочку-мутанта. Жесткое и печальное роуд-муви о старении-->
+<!--                супергероев</p> &lt;!&ndash;${shortDescription}&ndash;&gt;-->
+
+<!--            <div class="mb-40">-->
+<!--                <a href="#" class="btn">Смотреть</a>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;mb-40&ndash;&gt;-->
+
+<!--            <ul class="params mb-40">-->
+<!--                <li><span class="text-muted">Аудиодорожки </span>Русский, Русский 5.1, Английский, Английский 5.1</li>-->
+<!--                <li><span class="text-muted">Возраст </span><span><span class="tag">18+</span></span></li> &lt;!&ndash;${ageRating}+&ndash;&gt;-->
+<!--            </ul>-->
+
+<!--            <h2>О фильме</h2>-->
+
+<!--            <ul class="params">-->
+<!--                <li><span class="text-muted">Год производства </span>2017</li> &lt;!&ndash;${year}&ndash;&gt;-->
+<!--                <li><span class="text-muted">Страна </span>США</li> &lt;!&ndash;${countries.name}&ndash;&gt;-->
+<!--                <li><span class="text-muted">Жанр </span><span><a href="#">фантастика</a>, <a href="#">боевик</a>, <a href="#">триллер</a>, <a-->
+<!--                        href="#">драма</a></span></li>-->
+<!--                &lt;!&ndash;genres = [{name:},{name:},{name:},{name:}] отрисовать столько раз, сколько жанров&ndash;&gt;-->
+<!--                <li><span class="text-muted">Время </span>-->
+<!--                    <time class="text-muted">137 мин. / 02:17</time>  &lt;!&ndash;${movieLength} мин.&ndash;&gt;-->
+<!--                </li>-->
+<!--                <li><span class="text-muted">Описание </span>Лента расскажет историю математического гения Кристиана Вульфа, который подрабатывает аудитором для самых опасных преступных организаций. Когда ему на хвост садится отдел по борьбе с преступностью Министерства финансов во главе с Рэем Кингом, Кристиан решает найти себе законопослушного клиента и проводит аудит в компании по производству новейшей робототехники, где сотрудница финансового отдела обнаружила «нестыковочку» в миллионы долларов. Но стоит Кристиану взяться за счета и выйти на след, как в деле начинают появляться жертвы.</li> &lt;!&ndash;${description}&ndash;&gt;-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;wrapper-col-2&ndash;&gt;-->
+
+
+<!--        <div class="wrapper-col-3">-->
+<!--            <span class="rating-main">7.6</span> &lt;!&ndash;${rating.kp}&ndash;&gt;-->
+<!--            <span class="rating-counts">296 824 оценки</span> &lt;!&ndash;${votes.kp}&ndash;&gt;-->
+<!--            <a href="#" class="rating-details">459 рецензий</a> &lt;!&ndash;${votes.filmCritics}&ndash;&gt;-->
+<!--        </div>-->
+<!--        &lt;!&ndash;wrapper-col-3&ndash;&gt;-->
+
+    </div>
+    <!--.wrapper-->
+</div>
+<!--.container-->
+
+
+
+<!--<script src="https://kinobox.tv/kinobox.min.js"></script>-->
+<!--<script>kbox('.kinobox_player', {search: {query: 'Логан'}})</script>-->
+
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+
+<script src="film.js"></script>
+
+</body>
+</html>
