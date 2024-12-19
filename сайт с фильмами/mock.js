@@ -542,9 +542,301 @@
              "typeNumber": 1,
              "status": null
          },
+         {
+            "id": 409600,
+            "name": "Доктор Стрэндж",
+            "alternativeName": "Doctor Strange",
+            "enName": "",
+            "type": "movie",
+            "year": 2016,
+            "description": "Страшная автокатастрофа поставила крест на карьере успешного нейрохирурга Доктора Стрэнджа. Отчаявшись, он отправляется в путешествие в поисках исцеления и открывает в себе невероятные способности к трансформации пространства и времени. Теперь он — связующее звено между параллельными измерениями, а его миссия — защищать жителей Земли и противодействовать злу, какое бы обличие оно ни принимало.",
+            "shortDescription": "После автокатастрофы хирург становится верховным защитником Земли. В роли супергероя — Бенедикт Камбербэтч",
+            "movieLength": 115,
+            "isSeries": false,
+            "ticketsOnSale": false,
+            "totalSeriesLength": null,
+            "seriesLength": null,
+            "ratingMpaa": "pg13",
+            "ageRating": 18,
+            "top10": null,
+            "top250": null,
+            "typeNumber": 1,
+            "status": null,
+            "names": [
+                {
+                    "name": "Доктор Стрэндж"
+                },
+                {
+                    "name": "Doctor Strange"
+                },
+                {
+                    "name": "Marvel's Doctor Strange",
+                    "language": "US",
+                    "type": "Marvel complete name"
+                },
+                {
+                    "name": "마블 닥터 스트레인지",
+                    "language": "KR",
+                    "type": null
+                },
+                {
+                    "name": "Doctor Extraño",
+                    "language": "ES",
+                    "type": null
+                },
+                {
+                    "name": "Dr. Strange (Doctor Extraño)",
+                    "language": "ES",
+                    "type": null
+                },
+                {
+                    "name": "Doktor Strejnxh",
+                    "language": "AL",
+                    "type": null
+                },
+                {
+                    "name": "Дoктор Стрэндж",
+                    "language": "RU",
+                    "type": null
+                },
+                {
+                    "name": "Doktor Strange",
+                    "language": "SK",
+                    "type": "TV title"
+                },
+                {
+                    "name": "Doctor Strange 3D",
+                    "language": "US",
+                    "type": "3D version"
+                },
+                {
+                    "name": "Marvel Studios' Doctor Strange",
+                    "language": "US",
+                    "type": null
+                },
+                {
+                    "name": "奇異博士",
+                    "language": "HK",
+                    "type": null
+                },
+                {
+                    "name": "Բժիշկ Սթրենջ",
+                    "language": "AM",
+                    "type": null
+                },
+                {
+                    "name": "Doutor Estranho",
+                    "language": "BR",
+                    "type": null
+                },
+                {
+                    "name": "Doktor Strange",
+                    "language": "TR",
+                    "type": null
+                },
+                {
+                    "name": "דר מוזר 1",
+                    "language": "IL",
+                    "type": null
+                },
+                {
+                    "name": "奇异博士",
+                    "language": "CN",
+                    "type": null
+                },
+                {
+                    "name": "Phù Thuỷ Tối Thượng",
+                    "language": "VN",
+                    "type": null
+                }
+            ],
+            "externalId": {
+                "imdb": "tt1211837",
+                "tmdb": 284052,
+                "kpHD": "444c5bfed612531184dd86785e799f58"
+            },
+            "logo": {
+                "url": "https://avatars.mds.yandex.net/get-ott/2419418/2a0000016e043b6ca119c3a776483a7d95f8/orig"
+            },
+            "poster": {
+                "url": "https://image.openmoviedb.com/kinopoisk-images/4303601/bb966b79-5b10-485d-88d7-fb6aeb79b185/orig",
+                "previewUrl": "https://image.openmoviedb.com/kinopoisk-images/4303601/bb966b79-5b10-485d-88d7-fb6aeb79b185/x1000"
+            },
+            "backdrop": {
+                "url": "https://image.openmoviedb.com/kinopoisk-ott-images/374297/2a00000169022ed31a24454b60208e71dc88/orig",
+                "previewUrl": "https://image.openmoviedb.com/kinopoisk-ott-images/374297/2a00000169022ed31a24454b60208e71dc88/x1000"
+            },
+            "rating": {
+                "kp": 7.525,
+                "imdb": 7.5,
+                "filmCritics": 7.3,
+                "russianFilmCritics": 94.7368,
+                "await": null
+            },
+            "votes": {
+                "kp": 728876,
+                "imdb": 811803,
+                "filmCritics": 389,
+                "russianFilmCritics": 19,
+                "await": 0
+            },
+            "genres": [
+                {
+                    "name": "фантастика"
+                },
+                {
+                    "name": "фэнтези"
+                },
+                {
+                    "name": "боевик"
+                },
+                {
+                    "name": "приключения"
+                }
+            ],
+            "countries": [
+                {
+                    "name": "США"
+                }
+            ],
+            "releaseYears": []
+         },
+         {
+            "id": 178710,
+            "name": "Доктор Хаус",
+            "alternativeName": "House, M.D.",
+            "enName": "",
+            "type": "tv-series",
+            "year": 2004,
+            "description": "Сериал рассказывает о команде врачей, которые должны правильно поставить диагноз пациенту и спасти его. Возглавляет команду доктор Грегори Хаус, который ходит с тростью после того, как его мышечный инфаркт в правой ноге слишком поздно правильно диагностировали. Как врач Хаус просто гений, но сам не отличается проникновенностью в общении с больными и с удовольствием избегает их, если только есть возможность. Он сам всё время проводит в борьбе с собственной болью, а трость в его руке только подчеркивает его жесткую, ядовитую манеру общения. Порой его поведение можно назвать почти бесчеловечным, и при этом он прекрасный врач, обладающий нетипичным умом и безупречным инстинктом, что снискало ему глубокое уважение. Будучи инфекционистом, он ещё и замечательный диагност, который любит разгадывать медицинские загадки, чтобы спасти кому-то жизнь. Если бы все было по его воле, то Хаус лечил бы больных не выходя из своего кабинета.",
+            "shortDescription": "Все люди врут, но этого не проведешь. Выдающийся медицинский детектив о докторе-гении",
+            "movieLength": 0,
+            "isSeries": true,
+            "ticketsOnSale": false,
+            "totalSeriesLength": null,
+            "seriesLength": 43,
+            "ratingMpaa": null,
+            "ageRating": 18,
+            "top10": null,
+            "top250": 16,
+            "typeNumber": 2,
+            "status": "completed",
+            "names": [
+                {
+                    "name": "Доктор Хаус"
+                },
+                {
+                    "name": "House, M.D."
+                },
+                {
+                    "name": "Dr House",
+                    "language": "BR",
+                    "type": "libdrive"
+                },
+                {
+                    "name": "Dr. House",
+                    "language": "DE",
+                    "type": null
+                },
+                {
+                    "name": "House - Medical Division",
+                    "language": "GB",
+                    "type": null
+                },
+                {
+                    "name": "دکتر هاوس",
+                    "language": "IR",
+                    "type": null
+                },
+                {
+                    "name": "Доктор Гаус",
+                    "language": "UA",
+                    "type": null
+                },
+                {
+                    "name": "Хаус",
+                    "language": "UA",
+                    "type": null
+                },
+                {
+                    "name": "Гаус",
+                    "language": "UA",
+                    "type": null
+                },
+                {
+                    "name": "House M.D.",
+                    "language": "US",
+                    "type": null
+                },
+                {
+                    "name": "House MD",
+                    "language": "US",
+                    "type": null
+                },
+                {
+                    "name": "House, MD",
+                    "language": "US",
+                    "type": null
+                }
+            ],
+            "externalId": {
+                "kpHD": "47bdf4b7e9426b1480b4118238af61d7",
+                "imdb": "tt0412142",
+                "tmdb": null
+            },
+            "logo": {
+                "url": "https://image.openmoviedb.com/tmdb-images/original/unWYkMw7KfP9t6UKWPn94Rj9SyU.png",
+                "previewUrl": "https://image.openmoviedb.com/tmdb-images/w500/unWYkMw7KfP9t6UKWPn94Rj9SyU.png"
+            },
+            "poster": {
+                "url": "https://image.openmoviedb.com/kinopoisk-images/1599028/270df10e-2e72-4d8e-a49b-f84c751162a7/orig",
+                "previewUrl": "https://image.openmoviedb.com/kinopoisk-images/1599028/270df10e-2e72-4d8e-a49b-f84c751162a7/x1000"
+            },
+            "backdrop": {
+                "url": "https://image.openmoviedb.com/tmdb-images/original/1QHPiZLqlOdcMvRpGKqE0E4ZQBb.jpg",
+                "previewUrl": "https://image.openmoviedb.com/tmdb-images/w500/1QHPiZLqlOdcMvRpGKqE0E4ZQBb.jpg"
+            },
+            "rating": {
+                "kp": 8.795,
+                "imdb": 8.7,
+                "filmCritics": 0,
+                "russianFilmCritics": 0,
+                "await": null
+            },
+            "votes": {
+                "kp": 507008,
+                "imdb": 521721,
+                "filmCritics": 0,
+                "russianFilmCritics": 0,
+                "await": 0
+            },
+            "genres": [
+                {
+                    "name": "драма"
+                },
+                {
+                    "name": "детектив"
+                }
+            ],
+            "countries": [
+                {
+                    "name": "США"
+                }
+            ],
+            "releaseYears": [
+                {
+                    "start": 2004,
+                    "end": 2012
+                }
+            ]
+        },
      ]
  }
 
+ const MOCK_VIDEODATA_MAPPER = {
+    2717: [],
+    2222: []
+ }
 
 // const MOCK_VIDEODATA = [
 //         {
@@ -659,5 +951,4 @@
 //             "updatedAt": "2024-12-04T05:35:45.3535937Z"
 //         }
 //     ]
-
 

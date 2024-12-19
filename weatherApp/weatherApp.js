@@ -192,8 +192,6 @@ function loadWeatherOfCity(cityName) {
 
 
 function updateCityState(responseData, cityName) {
-
-
     let i = state.cities.findIndex((cityData) => {
         return cityData.city === cityName;
     })

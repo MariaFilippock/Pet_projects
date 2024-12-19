@@ -1,6 +1,6 @@
-import {MOCK_DATA} from "./mock.js";
-import {getVideoMovieByID, getMoviesByFirstLetters, getMoviesByName} from "./api.js";
 
+import {getVideoMovieByID, getMoviesByFirstLetters, fetchMovieAndVideoDataByName, fetchMovieAndVideoDataById} from "./api.js";
+import {Store} from "./store.js";
 
 const searchBtn = document.querySelector('.btn-search');
 const searchInput = document.getElementById('search-input');
@@ -8,15 +8,6 @@ const movieCardContainer = document.querySelector('.wrapper');
 const formSearch = document.querySelector('.form-search');
 const dropdownContainer = document.getElementById('dropdown-container');
 
-
-
-let state = {
-    movie: {},  
-    error: '',
-    isloadedListVisible: false,
-    loadedList: [],
-    favoritesMovieList: [],
-}
 
 
 searchBtn.addEventListener('click', handleSearchMovieByName);
@@ -27,7 +18,7 @@ document.addEventListener('click', (event) => {
         return
     }
 
-    state.isloadedListVisible = false;
+    Store.state.isloadedListVisible = false;
     renderListOfMovies();
     searchInput.value = '';
 });
@@ -35,26 +26,17 @@ document.addEventListener('click', (event) => {
 
 function handleShowAllMovies(event) {
     event.preventDefault();
-    state.isloadedListVisible = true;
+    Store.state.isloadedListVisible = true;
 
     getMoviesByFirstLetters(searchInput.value)
     .then((responseData) => {
         if (responseData) {
-            getListOfMovies(responseData);
+            Store.setListOfMovies(responseData);
         }
-    }).then(() => {
         renderListOfMovies();
-    });
+    })     
 }
 
-
-function getListOfMovies(responseData) {
-    //получаем данные по фильмам по введенным значениям
-
-    state.loadedList = responseData.docs.filter((movieData) => {
-        return movieData.rating.kp > 5;
-    });
-}
 
 function showExistedInfo(data) {
     return Number(data) > 0 ? data.toFixed(1) : ``;
@@ -67,7 +49,7 @@ function showAge(data) {
 
 
 function createList() {
-    const list = state.loadedList.map((movieEl) => {
+    const list = Store.state.loadedList.map((movieEl) => {
         return `<div class="dropdown-movie-item" id = '${movieEl.id}'>${movieEl.name} 
                     <span class="dropdown-movie-rating">${showExistedInfo(movieEl.rating.kp)}</span>
                 </div>`
@@ -81,7 +63,7 @@ function createList() {
 function renderListOfMovies() {
     
     //рендерим список фильмов по введенным значениям
-    dropdownContainer.innerHTML = state.isloadedListVisible ? `<div class="dropdown-list-movies">
+    dropdownContainer.innerHTML = Store.state.isloadedListVisible ? `<div class="dropdown-list-movies">
                                  ${createList()}
                                  </div>` : '';
 
@@ -96,21 +78,18 @@ function renderListOfMovies() {
 
 //поиск данных по фильму из выпадающего списка в поиске
 function handleFindMovieIdAtDropdownList(event) {
-    // debugger
     let parentNode = event.target.closest('.dropdown-movie-item');
+    let parentNodeID = Number(parentNode.id);
 
-    let parentNodeId = parentNode.id;
-    const nameMovie = document.getElementById(parentNodeId).firstChild.textContent.trim();
-
-    let chosenMovie = state.loadedList.find((movieData) => {
-        return movieData.name === nameMovie;
+    let chosenMovie = Store.state.loadedList.find((movieData) => {
+        return movieData.id === parentNodeID;
     })
-
-    getVideoMovieByID(parentNodeId)
+    
+    getVideoMovieByID(parentNodeID)
         .then((responseVideoData) => {
-            updateMovieInfo({docs: [chosenMovie]}, responseVideoData);
+            Store.updateMovieInfo(chosenMovie, responseVideoData);
             renderCardOfMovie();
-            saveToLocalStorage();        
+            // Store.saveToLocalStorage();        
     })
 }
 
@@ -122,65 +101,28 @@ function handleSearchMovieByName(event) {
         return;
     }
 
-    let responseData = null;
 
-    getMoviesByName(searchInput.value)
-        .then((_responseData) => {
-            responseData = _responseData;
-            debugger
-            return getVideoMovieByID(_responseData.docs[0].id);
-        }).then((responseVideoData) => {
-        updateMovieInfo(responseData, responseVideoData);
-        renderCardOfMovie();
-        saveToLocalStorage();
-    })
-}
-
-
-
-
-function updateMovieInfo(responseData, responseVideoData) {
-
-    state.movie = {
-        poster: responseData?.docs[0].poster?.url,
-        name: responseData?.docs[0].name,
-        year: responseData?.docs[0].year,
-        alternativeName: responseData?.docs[0].alternativeName,
-        ageRating: responseData?.docs[0].ageRating,
-        shortDescription: responseData?.docs[0].shortDescription,
-        countryName: responseData?.docs[0].countries[0]?.name,
-        genres: responseData?.docs[0].genres,
-        movieLength: responseData?.docs[0].movieLength,
-        ratingKp: responseData?.docs[0].rating?.kp,
-        votesKp: responseData?.docs[0].votes?.kp,
-        filmCritics: responseData?.docs[0].votes?.filmCritics,
-        description: responseData?.docs[0].description,
-        idMovie: responseData?.docs[0].id,
-        selectedVideoPlayer: responseVideoData[1].source,
-    
-        videoPlayers: responseVideoData.filter((obj) => {
-            return obj.source !== 'Alloha' 
-            && obj.iframeUrl
-        }).map((videoPlayer) => {
-            return {
-                source: videoPlayer.source,
-                iframeUrl: videoPlayer.iframeUrl,
-            }
+    fetchMovieAndVideoDataByName(searchInput.value)
+        .then(([doc, responseVideoData]) => {
+            Store.updateMovieInfo(doc, responseVideoData);
+            renderCardOfMovie();
+            // Store.saveToLocalStorage();
         })
-    }
+
+    searchInput.value = '';
 }
 
 
 
 function countHoursAndMinutes(minutes) {
     let hours = Math.floor(minutes / 60);
-    return `${hours} ч ${minutes - (hours * 60)} мин`;
+    return hours ? `${hours} ч ${minutes - (hours * 60)} мин` : ``;
 }
 
 
 
 function createGenresHTML() {
-    const genresAll = state.movie.genres.map((genre) => {
+    const genresAll = Store.state.movie.genres.map((genre) => {
         return `<a href="#">${genre.name}</a>`;
     })
 
@@ -189,8 +131,8 @@ function createGenresHTML() {
 
 
 function createPlayerSelectField() {
-    const playersAll = state.movie.videoPlayers.map((players) => {
-        return `<option id = "${players.source}"  ${ players.source ===  state.movie.selectedVideoPlayer ? 'selected' : ``} >${players.source}</option>`;
+    const playersAll = Store.state.movie.videoPlayers.map((players) => {
+        return `<option id = "${players.source}"  ${players.source === Store.state.movie.selectedVideoPlayer ? 'selected' : ``} >${players.source}</option>`;
     })
 
     return `<select id = "select-player">${playersAll.join(' ')}</select>`
@@ -199,53 +141,57 @@ function createPlayerSelectField() {
 
 function renderCardOfMovie() {
     movieCardContainer.innerHTML = '';
+    if (!Store.state.movie.idMovie) {
+        return;
+    }
 
     const movieCardHTML = `<div class="wrapper-col-1">
-            <img src="${state.movie.poster}" alt="${state.movie.name} ${(state.movie.year)}" >
+            <img src="${Store.state.movie.poster}" alt="${Store.state.movie.name} ${(Store.state.movie.year)}" >
         </div>
         <div class="wrapper-col-2">
         ${renderFavoritesBtn()}
         
-            <h1 class="title">${state.movie.name} (${state.movie.year})</h1>
-            <h6 class="subtitle">${state.movie.alternativeName} ${showAge(state.movie.ageRating)}+</h6>
-            <p class="description">${state.movie.shortDescription}</p>
+            <h1 class="title">${Store.state.movie.name} (${Store.state.movie.year})</h1>
+            <h6 class="subtitle">${Store.state.movie.alternativeName} ${showAge(Store.state.movie.ageRating)}+</h6>
+            <p class="description">${Store.state.movie.shortDescription}</p>
 
             <div class="mb-40">
                 <a href="#" class="btn" id = "watch-btn">Смотреть</a>
             </div>
 
             <ul class="params mb-40">
+                <li><span class="text-muted">Формат </span> ${Store.state.movie.isSerial ? `Сериал` : `Фильм`}</li>
                 <li><span class="text-muted">Аудиодорожки </span>Русский</li>
-                <li><span class="text-muted">Возраст </span><span><span class="tag">${showAge(state.movie.ageRating)}+</span></span></li>
+                <li><span class="text-muted">Возраст </span><span><span class="tag">${showAge(Store.state.movie.ageRating)}+</span></span></li>
             </ul>
 
             <h2>О фильме</h2>
 
             <ul class="params">
-                <li><span class="text-muted">Год производства </span>${state.movie.year}</li>
-                <li><span class="text-muted">Страна </span>${state.movie.countryName}</li>
+                <li><span class="text-muted">Год производства </span>${Store.state.movie.year}</li>
+                <li><span class="text-muted">Страна </span>${Store.state.movie.countryName}</li>
                 <li><span class="text-muted">Жанр </span>
                 <span class="genres-list">${createGenresHTML()}</span>
                 </li>
-                <li><span class="text-muted">Время </span>
-                    <time class="text-muted">${state.movie.movieLength} мин. / ${countHoursAndMinutes(state.movie.movieLength)}</time>
+                <li><span class="text-muted">Длительность </span>
+                    <time class="text-muted">${Store.state.movie.movieLength ? `${Store.state.movie.movieLength} мин. / ${countHoursAndMinutes(Store.state.movie.movieLength)}` : `${Store.state.movie.seriesLength}  мин.`}</time>
                 </li>
-                <li><span class="text-muted">Описание </span>${state.movie.description}</li>
+                <li><span class="text-muted">Описание </span>${Store.state.movie.description}</li>
             </ul>
 
                 <div class="kinobox_player">
                     ${createPlayerSelectField()}
-                    <iframe controls id = "iframe-player" src="${getIframeBySource()}" width="100%" height="500px" style = "border: 1px solid #aaa; border-radius: 3px;"></iframe>
+                    <iframe controls id = "iframe-player" src="${Store.getIframeBySource()}" width="100%" height="500px" style = "border: 1px solid #aaa; border-radius: 3px;"></iframe>
                 </div>
         </div>
              
         <div class="wrapper-col-3">
-            <span class="rating-main">${(state.movie.ratingKp).toFixed(1)}</span>
-            <span class="rating-counts">${(state.movie.votesKp).toLocaleString()} оценки</span>
-            <a href="#" class="rating-details">${state.movie.filmCritics} рецензий</a>
+            <span class="rating-main">${(Store.state.movie.ratingKp).toFixed(1)}</span>
+            <span class="rating-counts">${(Store.state.movie.votesKp).toLocaleString()} оценки</span>
+            <a href="#" class="rating-details">${Store.state.movie.filmCritics} рецензий</a>
 
             <h4 class = "favorites-title"> Мое избранное </h4>   
-            ${renderFavoriteMovieList()}
+                ${renderFavoriteMovieList()}
         </div>`
 
 
@@ -271,7 +217,6 @@ function renderCardOfMovie() {
     if (favoritesList) {
         favoritesList.addEventListener('click', handleFindMovieIdAtFavoriteList);
     }
-
 }
 
 
@@ -280,33 +225,19 @@ function handleFindMovieIdAtFavoriteList(event) {
 
     let responseData = null;
 
-    getMoviesByName(parentNode.innerText)
-        .then((_responseData) => {
-            responseData = _responseData;
-            return getVideoMovieByID(parentNode.id)
-        }).then((responseVideoData) => {
-            console.log(responseData);
-            updateMovieInfo(responseData, responseVideoData);
+    fetchMovieAndVideoDataById(parentNode.id)
+    .then(([responseData, responseVideoData]) => {
+            Store.updateMovieInfo(responseData, responseVideoData);
             renderCardOfMovie();
-            saveToLocalStorage();
+            // Store.saveToLocalStorage();
         })
-   
-}
-
-
-//получение данных по выбранному видеоплееру
-function getIframeBySource() { 
-     let chosenPlayer = state.movie.videoPlayers.find((player) => {
-        return player.source === state.movie.selectedVideoPlayer;
-    })
-
-    return chosenPlayer.iframeUrl;
+        
 }
 
 
 //выбор плеера из выпадающего списка и отрисовка
 function handleSearchPlayerAtSelect(event) {
-    state.movie.selectedVideoPlayer = event.target.value;
+    Store.state.movie.selectedVideoPlayer = event.target.value;
 
     renderCardOfMovie();
 }
@@ -314,34 +245,34 @@ function handleSearchPlayerAtSelect(event) {
 
 //клик, чтобы добавить в избранное
 function handleClickFavorites() {
-    const chooseFavorite = state.favoritesMovieList.find((favMovie) => {
-        return favMovie.id === state.movie.idMovie;
+    const chooseFavorite = Store.state.favoritesMovieList.find((favMovie) => {
+        return favMovie.id === Store.state.movie.idMovie;
     });
 
 
     if (!chooseFavorite) {
-        state.favoritesMovieList.push({
+        Store.state.favoritesMovieList.push({
             //проверяю, что его нет в списке избранных фильмов
-            name: state.movie.name,
-            poster: state.movie.poster,
-            id: state.movie.idMovie
+            name: Store.state.movie.name,
+            poster: Store.state.movie.poster,
+            id: Store.state.movie.idMovie
         });
     } else {
         //если повторно жму на фильм, который уже есть в списке избранного
-        state.favoritesMovieList = state.favoritesMovieList.filter((favMovie) => {
-            return favMovie.id !== state.movie.idMovie;
+        Store.state.favoritesMovieList = Store.state.favoritesMovieList.filter((favMovie) => {
+            return favMovie.id !== Store.state.movie.idMovie;
 
         })
     }
 
-
     renderCardOfMovie();
-    saveToLocalStorage();
+    Store.saveToLocalStorage();
 }
+
 
 //получить данные по изб фильмам и отрисовать 
 function renderFavoriteMovieList() {
-    const favoriteMovieList = state.favoritesMovieList.map((favoriteEl) => {
+    const favoriteMovieList = Store.state.favoritesMovieList.map((favoriteEl) => {
         return `<div class = "favorite-movie-item" id = "${favoriteEl.id}">
                     <img id = "favorite-movie-poster" src = "${favoriteEl.poster}"> <div class="favorite-movie-name">${favoriteEl.name}
                     </div>
@@ -353,25 +284,18 @@ function renderFavoriteMovieList() {
 
 //отрисовка на закрашенное/незакрашенное сердечко
 function renderFavoritesBtn() {
-    const chooseFavorite = state.favoritesMovieList.find((favMovie) => {
-        return favMovie.id === state.movie.idMovie;
+    const chooseFavorite = Store.state.favoritesMovieList.find((favMovie) => {
+        return favMovie.id === Store.state.movie.idMovie;
     });
 
     return  `<div id = "add-to-favorites"> 
                 <span>Добавить в избранное</span> 
                 <span id = "favorites-img">${chooseFavorite ? `<ion-icon name="heart"></ion-icon>` : `<ion-icon name="heart-outline"></ion-icon>`}</span>
-            </div>`;
+             </div>`;
 
 }
 
 
-function saveToLocalStorage() {
-    localStorage.setItem('state', JSON.stringify(state));
-}
+Store.initStateFromLocalStorage();
+renderCardOfMovie();
 
-
-if (localStorage.getItem('state')) {
-    // get - получить данные по ключу (в данном случае ключ: state)
-    state = JSON.parse(localStorage.getItem('state'));
-    renderCardOfMovie();
-}
