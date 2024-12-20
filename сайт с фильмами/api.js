@@ -1,6 +1,6 @@
-import {MOCK_DATA} from "./mock.js";
+import { MOCK_DATA } from "./mock.js";
 
-export function getVideoMovieByID(id) {
+export function loadVideoPlayersByMovieId(id) {
     const url = `https://kinobox.tv/api/players?kinopoisk=${id}`;
 
     return fetch(url)
@@ -72,10 +72,10 @@ export function fetchMovieAndVideoDataByName(movieName) {
     return getMoviesByName(movieName)
         .then((_responseData) => {
             responseData = _responseData;
-            return getVideoMovieByID(_responseData.docs[0].id)
+            return loadVideoPlayersByMovieId(_responseData.docs[0].id)
                 .then((responseVideoData) => {
                     return [responseData.docs[0], responseVideoData];
-                    })
+                })
         })
 }
 
@@ -85,11 +85,11 @@ export function fetchMovieAndVideoDataById(movieId) {
     return getMoviesById(movieId)
         .then((_responseData) => {
             responseData = _responseData;
-            return getVideoMovieByID(movieId)
+            return loadVideoPlayersByMovieId(movieId)
                 .then((responseVideoData) => {
                     console.log(responseVideoData);
                     return [responseData, responseVideoData];
-                    })
+                })
         })
 }
 
