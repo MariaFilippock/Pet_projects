@@ -37,6 +37,7 @@ export function getMoviesByFirstLetters(name, page = 1, limit = 30) {
     }).then((data) => {
         if (counter === localCount) {
             return data.json();
+
         }
 
     })

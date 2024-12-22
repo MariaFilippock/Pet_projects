@@ -9,10 +9,8 @@ const formSearch = document.querySelector('.form-search');
 const dropdownContainer = document.getElementById('dropdown-container');
 
 
-
 searchBtn.addEventListener('click', handleSearchMovieByName);
 searchInput.addEventListener('input', handleShowAllMovies);
-
 document.addEventListener('click', (event) => {
     if (formSearch.contains(event.target)) {
         return
@@ -31,10 +29,66 @@ function handleShowAllMovies(event) {
     getMoviesByFirstLetters(searchInput.value)
         .then((responseData) => {
             if (responseData) {
-                Store.setListOfMovies(responseData);
+                // console.log(responseData.docs);
+                Store.setListOfMovies(responseData.docs);
             }
             renderListOfMovies();
         })
+}
+
+
+//поиск данных по фильму из выпадающего списка в поиске
+function handleFindMovieIdAtDropdownList(event) {
+    let parentNode = event.target.closest('.dropdown-movie-item');
+    let parentNodeID = Number(parentNode.id);
+
+    loadVideoPlayersByMovieId(parentNodeID)
+        .then((responseVideoData) => {
+            Store.updateMovieInfo(Store.getVideoPlayerByID(parentNodeID), responseVideoData);
+            renderCardOfMovie();
+        })
+}
+
+
+function handleSearchMovieByName(event) {
+    event.preventDefault();
+
+    if (!searchInput.value) {
+        return;
+    }
+
+    fetchMovieAndVideoDataByName(searchInput.value)
+        .then(([doc, responseVideoData]) => {
+            Store.updateMovieInfo(doc, responseVideoData);
+            renderCardOfMovie();
+        })
+
+    searchInput.value = '';
+}
+
+
+function handleFindMovieIdAtFavoriteList(event) {
+    let parentNode = event.target.closest('.favorite-movie-item');
+
+    fetchMovieAndVideoDataById(parentNode.id)
+        .then(([responseData, responseVideoData]) => {
+            Store.updateMovieInfo(responseData, responseVideoData);
+            renderCardOfMovie();
+        })
+}
+
+
+//выбор плеера из выпадающего списка и отрисовка
+function handleSearchPlayerAtSelect(event) {
+    Store.setSelectedVideoPlayer(event.target.value);
+    renderCardOfMovie();
+}
+
+
+//клик, чтобы добавить в избранное
+function handleClickFavorites() {
+    Store.changeCurrentFavouriteMovie();
+    renderCardOfMovie();
 }
 
 
@@ -61,14 +115,12 @@ function createList() {
 
 //отрисовка выпадающего списка и слушатель на клик по одному из выпадающего списка фильму
 function renderListOfMovies() {
-
     //рендерим список фильмов по введенным значениям
     dropdownContainer.innerHTML = Store.state.isloadedListVisible ? `<div class="dropdown-list-movies">
                                  ${createList()}
                                  </div>` : '';
 
     const dropdownListMovies = dropdownContainer.querySelector('.dropdown-list-movies');
-
     //слушатель, если клик по одному из фильмов
     if (dropdownListMovies) {
         dropdownListMovies.addEventListener('click', handleFindMovieIdAtDropdownList);
@@ -76,46 +128,10 @@ function renderListOfMovies() {
 }
 
 
-//поиск данных по фильму из выпадающего списка в поиске
-function handleFindMovieIdAtDropdownList(event) {
-    let parentNode = event.target.closest('.dropdown-movie-item');
-    let parentNodeID = Number(parentNode.id);
-
-    
-
-
-    loadVideoPlayersByMovieId(parentNodeID)
-        .then((responseVideoData) => {
-            Store.updateMovieInfo(Store.getVideoPlayerByID(parentNodeID), responseVideoData);
-            renderCardOfMovie();  
-        })
-}
-
-
-function handleSearchMovieByName(event) {
-    event.preventDefault();
-
-    if (!searchInput.value) {
-        return;
-    }
-
-
-    fetchMovieAndVideoDataByName(searchInput.value)
-        .then(([doc, responseVideoData]) => {
-            Store.updateMovieInfo(doc, responseVideoData);
-            renderCardOfMovie();
-        })
-
-    searchInput.value = '';
-}
-
-
-
 function countHoursAndMinutes(minutes) {
     let hours = Math.floor(minutes / 60);
     return hours ? `${hours} ч ${minutes - (hours * 60)} мин` : ``;
 }
-
 
 
 function createGenresHTML() {
@@ -191,54 +207,21 @@ function renderCardOfMovie() {
                 ${renderFavoriteMovieList()}
         </div>`
 
-
     movieCardContainer.insertAdjacentHTML('afterbegin', movieCardHTML);
 
     const selectPlayer = document.getElementById('select-player');
-    selectPlayer.addEventListener('change', handleSearchPlayerAtSelect);
-
-    //перелистывание до контейнера с видеоплеером
     const watchBtn = document.getElementById('watch-btn');
-    watchBtn.addEventListener('click', () => {
-        document.getElementById('iframe-player').scrollIntoView({ behavior: "smooth", });
-    })
-
-    //смена сердечка при клике
     const addToFavorites = document.getElementById('add-to-favorites');
-    addToFavorites.addEventListener('click', handleClickFavorites);
-
-
-    //переход по клику на фильм в Избранном
     const favoritesList = document.getElementById('favorites-list');
 
+    selectPlayer.addEventListener('change', handleSearchPlayerAtSelect);
+    watchBtn.addEventListener('click', () => {
+        document.getElementById('iframe-player').scrollIntoView({ behavior: "smooth", });
+    });
+    addToFavorites.addEventListener('click', handleClickFavorites);
     if (favoritesList) {
         favoritesList.addEventListener('click', handleFindMovieIdAtFavoriteList);
     }
-}
-
-
-function handleFindMovieIdAtFavoriteList(event) {
-    let parentNode = event.target.closest('.favorite-movie-item');
-
-    fetchMovieAndVideoDataById(parentNode.id)
-        .then(([responseData, responseVideoData]) => {
-            Store.updateMovieInfo(responseData, responseVideoData);
-            renderCardOfMovie();
-        })
-}
-
-
-//выбор плеера из выпадающего списка и отрисовка
-function handleSearchPlayerAtSelect(event) {
-    Store.setSelectedVideoPlayer(event.target.value);
-    renderCardOfMovie();
-}
-
-
-//клик, чтобы добавить в избранное
-function handleClickFavorites() {
-    Store.changeCurrentFavouriteMovie();
-    renderCardOfMovie(); 
 }
 
 
@@ -256,13 +239,9 @@ function renderFavoriteMovieList() {
 
 //отрисовка на закрашенное/незакрашенное сердечко
 function renderFavoritesBtn() {
-    const chooseFavorite = Store.state.favoritesMovieList.find((favMovie) => {
-        return favMovie.id === Store.state.movie.idMovie;
-    });
-
     return `<div id = "add-to-favorites"> 
                 <span>Добавить в избранное</span> 
-                <span id = "favorites-img">${chooseFavorite ? `<ion-icon name="heart"></ion-icon>` : `<ion-icon name="heart-outline"></ion-icon>`}</span>
+                <span id = "favorites-img">${Store.isFavoriteMovie() ? `<ion-icon name="heart"></ion-icon>` : `<ion-icon name="heart-outline"></ion-icon>`}</span>
              </div>`;
 }
 

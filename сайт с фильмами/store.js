@@ -9,7 +9,7 @@ const Store = {
 
     setListOfMovies: function (responseData) {
         //получаем данные по фильмам по введенным значениям
-        this.state.loadedList = responseData.docs.filter((movieData) => {
+        this.state.loadedList = responseData.filter((movieData) => {
             return movieData.rating.kp > 5;
         });
     },
@@ -79,12 +79,7 @@ const Store = {
     },
 
     changeCurrentFavouriteMovie: function () {
-        const chooseFavorite = this.state.favoritesMovieList.find((favMovie) => {
-            return favMovie.id === this.state.movie.idMovie;
-        });
-    
-    
-        if (!chooseFavorite) {
+        if (!this.isFavoriteMovie()) {
             this.state.favoritesMovieList.push({
                 //проверяю, что его нет в списке избранных фильмов
                 name: this.state.movie.name,
@@ -104,6 +99,12 @@ const Store = {
         this.state.movie.selectedVideoPlayer = value;    
     },
 
+    isFavoriteMovie: function() {
+        const chooseFavorite = this.state.favoritesMovieList.find((favMovie) => {
+            return favMovie.id === this.state.movie.idMovie;
+        });
+        return chooseFavorite;
+    },
 }
 
 export { Store }

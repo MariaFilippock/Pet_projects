@@ -272,7 +272,7 @@ a:hover {
     display: inline-block;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1424px) {
     .container {
         padding-left: 15px;
         padding-right: 15px;
@@ -285,7 +285,7 @@ a:hover {
     }
 
     .search-container {
-        max-width: 1024px;
+        max-width: 1424px;
     }
 }
 
