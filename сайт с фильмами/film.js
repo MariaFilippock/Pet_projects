@@ -16,7 +16,7 @@ document.addEventListener('click', (event) => {
         return
     }
 
-    Store.state.isloadedListVisible = false;
+    Store.setIsLoadedListVisible(false);
     renderListOfMovies();
     searchInput.value = '';
 })
@@ -24,7 +24,7 @@ document.addEventListener('click', (event) => {
 
 function handleShowAllMovies(event) {
     event.preventDefault();
-    Store.state.isloadedListVisible = true;
+    Store.setIsLoadedListVisible(true);
 
     getMoviesByFirstLetters(searchInput.value)
         .then((responseData) => {

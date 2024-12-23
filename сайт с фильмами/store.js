@@ -100,10 +100,12 @@ const Store = {
     },
 
     isFavoriteMovie: function() {
-        const chooseFavorite = this.state.favoritesMovieList.find((favMovie) => {
+        return this.state.favoritesMovieList.some((favMovie) => {
             return favMovie.id === this.state.movie.idMovie;
         });
-        return chooseFavorite;
+    },
+    setIsLoadedListVisible: function(isVisible) {
+        this.state.isloadedListVisible = isVisible;
     },
 }
 
