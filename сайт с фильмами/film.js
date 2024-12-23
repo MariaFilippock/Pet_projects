@@ -29,7 +29,6 @@ function handleShowAllMovies(event) {
     getMoviesByFirstLetters(searchInput.value)
         .then((responseData) => {
             if (responseData) {
-                // console.log(responseData.docs);
                 Store.setListOfMovies(responseData.docs);
             }
             renderListOfMovies();

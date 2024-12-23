@@ -74,23 +74,23 @@ export function fetchMovieAndVideoDataByName(movieName) {
         .then((_responseData) => {
             responseData = _responseData;
             return loadVideoPlayersByMovieId(_responseData.docs[0].id)
-                .then((responseVideoData) => {
-                    return [responseData.docs[0], responseVideoData];
-                })
         })
+        .then((responseVideoData) => {
+            return [responseData.docs[0], responseVideoData];
+        })
+
 }
 
 export function fetchMovieAndVideoDataById(movieId) {
     let responseData;
-    // debugger
+
     return getMoviesById(movieId)
         .then((_responseData) => {
             responseData = _responseData;
             return loadVideoPlayersByMovieId(movieId)
-                .then((responseVideoData) => {
-                    console.log(responseVideoData);
-                    return [responseData, responseVideoData];
-                })
+        })
+        .then((responseVideoData) => {
+            return [responseData, responseVideoData];
         })
 }
 
