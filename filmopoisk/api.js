@@ -8,19 +8,17 @@ export function loadVideoPlayersByMovieId(id) {
     //         resolve(MOCK_VIDEODATA_MAPPER[id])
     //     }, 1500);
     // }).then((responseVideoData) => {
-    //     console.log(responseVideoData);
     //     return responseVideoData;
     // })
+    //
 
     return fetch(url)
         .then((response) => {
             return response.json();
         }).then((responseVideoData) => {
-            console.log(responseVideoData);
             return responseVideoData;
         })
 }
-
 
 const headers = {
     "X-API-KEY": "H1WGZ9Y-VT04R1D-KFYYYQ2-ZDB00S5"
@@ -41,6 +39,7 @@ export function getMoviesByFirstLetters(name, page = 1, limit = 30) {
     //         }
     //     }, 1500);
     // })
+    //
 
     return fetch(url, {
         headers: headers
@@ -51,38 +50,24 @@ export function getMoviesByFirstLetters(name, page = 1, limit = 30) {
     })
 }
 
-
-export function fetchMovieByGenres(genreName, page = 1, limit = 12) {
-    const url = `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=${limit}&genres.name=${genreName}&rating.kp=7-10&rating.imdb=7-10`;
+export function fetchMovie(filters, page = 1, limit = 12) {
+    const dinamicQueryParams = {
+        page: page,
+        limit: limit,
+        'genres.name': filters.genre,
+        type: filters.type,
+        year: filters.year,
+    };
+    const url = `https://api.kinopoisk.dev/v1.4/movie?` + new URLSearchParams(dinamicQueryParams).toString();
 
     return fetch(url, {
-        headers: headers
+        headers: headers,
     }).then((response) => {
         return response.json();
     })
 }
-
-
-export function fetchMovieByType(type, page = 1, limit = 12) {
-    const url = `https://api.kinopoisk.dev/v1.4/movie?notNullFields=name&page=${page}&notNullFields=poster.url&notNullFields=shortDescription&limit=${limit}&type=${type}&rating.kp=6-10`;
-    
-    return fetch(url, {
-        headers: headers
-    }).then((response) => {
-        return response.json();
-    })
-
-     
-}
-
-
-// export function fetchMovieByYears() {
-    
-// }
-
 
 //получение списка топ-фильмов по клику на "фильмопоиск"
-
 export function fetchRandomMovies(page = 1, limit = 12) {
     const url = `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=${limit}&notNullFields=votes.filmCritics&notNullFields=name&notNullFields=description&notNullFields=poster.url&notNullFields=top250&notNullFields=alternativeName&rating.kp=8-10&rating.imdb=8-10&votes.filmCritics=1-6666666`;
 
@@ -113,7 +98,6 @@ function getMoviesById(id) {
     }).then((data) => {
         return data.json();
     })
-
 }
 
 
@@ -128,7 +112,6 @@ export function fetchMovieAndVideoDataByName(movieName) {
         .then((responseVideoData) => {
             return [responseData.docs[0], responseVideoData];
         })
-
 }
 
 export function fetchMovieAndVideoDataById(movieId) {

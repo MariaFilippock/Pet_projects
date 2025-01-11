@@ -209,9 +209,7 @@ function updateCityState(responseData, cityName) {
 
     //проверка на то, был ли уже добавлен этот город, если был, то обновляем инфо, если нет - пушим
     if (i >= 0) {
-        // debugger
         state.cities[i] = {...state.cities[i], ...loadedCity};
-
 
     } else {
         state.cities.push({...loadedCity, isMoreDetailsVisible: false});

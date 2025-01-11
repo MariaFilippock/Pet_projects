@@ -7,10 +7,15 @@ const Store = {
         favoritesMovieList: [],
         pageType: 'FilmList',
         moviesList: {},
-        selectedMenuItem: 'nav-brand',
     },
 
-    genresMap: {
+    sidebarFilter:  {
+        genre: 'приключения',
+        type: 'movie',
+        year: 2025,
+    },
+
+    GENRES_MAP: {
         adventure: 'приключения',
         cartoons: 'мультфильм',
         fantasy: 'фантастика',
@@ -26,21 +31,26 @@ const Store = {
     },
 
     FILM_TYPES: [
-        {id: 'movie',
-         text: 'фильмы',
-         icon: 'film-outline',
+        {
+            id: 'movie',
+            text: 'фильмы',
+            icon: 'film-outline',
         },
 
-        {id: 'tv-series',
-         text: 'сериалы',
-         icon: 'videocam-outline',
+        {
+            id: 'tv-series',
+            text: 'сериалы',
+            icon: 'videocam-outline',
         },
 
-        {id: 'cartoon',
-         text: 'мультифильмы',
-         icon: 'color-palette-outline',
-           },
+        {
+            id: 'cartoon',
+            text: 'мультифильмы',
+            icon: 'color-palette-outline',
+        },
     ],
+
+    years: getYearsArray(),
 
     setListOfMovies: function (responseData) {
         //получаем данные по фильмам по введенным значениям
@@ -153,10 +163,30 @@ const Store = {
     },
 
     //сохраняем текстовку   
-    setSelectedMenuItem: function (selectedMenuItem) {
-        this.state.selectedMenuItem = selectedMenuItem;
+    setSidebarFilter: function (filter) {
+        if (filter.type) {
+           this.sidebarFilter.type = filter.type;
+        } 
+        if (filter.genre) {
+            this.sidebarFilter.genre = filter.genre;
+        }
+        if (filter.year) {
+            this.sidebarFilter.year = filter.year;
+        }
+        
         this.saveToLocalStorage();  
     },    
+}
+
+function getYearsArray() {
+    let arr = [];
+    let nowYear = new Date().getFullYear();
+
+    while (nowYear > 1990) {
+        arr.push(nowYear);
+        nowYear--;
+    }  
+    return arr;
 }
 
 export { Store }
