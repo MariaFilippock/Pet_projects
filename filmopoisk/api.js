@@ -21,8 +21,8 @@ export function loadVideoPlayersByMovieId(id) {
 }
 
 const headers = {
-    "X-API-KEY": "H1WGZ9Y-VT04R1D-KFYYYQ2-ZDB00S5"
-    // "X-API-KEY": "B8Y4Q8Y-SSG4FVM-QQ1WBYN-RTF0J37"
+    // "X-API-KEY": "H1WGZ9Y-VT04R1D-KFYYYQ2-ZDB00S5"
+    "X-API-KEY": "B8Y4Q8Y-SSG4FVM-QQ1WBYN-RTF0J37"
 };
 
 let counter = 0;
@@ -50,15 +50,26 @@ export function getMoviesByFirstLetters(name, page = 1, limit = 30) {
     })
 }
 
-export function fetchMovie(filters, page = 1, limit = 12) {
-    const dinamicQueryParams = {
+export function fetchMovie(filters, page = 1, limit = 14) {
+    const queryParams = {
         page: page,
         limit: limit,
-        'genres.name': filters.genre,
+        'genres.name' : filters.genre,
         type: filters.type,
-        year: filters.year,
+        'rating.kp': '7-10',
     };
-    const url = `https://api.kinopoisk.dev/v1.4/movie?` + new URLSearchParams(dinamicQueryParams).toString();
+    
+    if (filters.year !== 'every-year') {
+          queryParams.year = filters.year;
+    }
+
+    const notNullFields = ['votes.filmCritics', 'name', 'description', 'poster.url', 'alternativeName'];
+    const searchParams = new URLSearchParams(queryParams);
+    for (const field of notNullFields) {
+        searchParams.append('notNullFields', field);
+    };
+
+    const url = `https://api.kinopoisk.dev/v1.4/movie?` + searchParams.toString();
 
     return fetch(url, {
         headers: headers,
@@ -68,7 +79,7 @@ export function fetchMovie(filters, page = 1, limit = 12) {
 }
 
 //получение списка топ-фильмов по клику на "фильмопоиск"
-export function fetchRandomMovies(page = 1, limit = 12) {
+export function fetchRandomMovies(page = 1, limit = 14) {
     const url = `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=${limit}&notNullFields=votes.filmCritics&notNullFields=name&notNullFields=description&notNullFields=poster.url&notNullFields=top250&notNullFields=alternativeName&rating.kp=8-10&rating.imdb=8-10&votes.filmCritics=1-6666666`;
 
     return fetch(url, {

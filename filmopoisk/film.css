@@ -213,13 +213,13 @@ a:hover {
     border-bottom: 1px solid rgba(171, 169, 169, 0.3);   
 }
 
-.types-search div, .types-search span, .year-search span {
+.types-search div, .types-search span {
     cursor: pointer;
     transition: all 400ms ease-in-out;
     margin-bottom: 15px;
 }
 
-.types-search div:hover, .year-search span:hover, .types-search span:hover {
+.types-search div:hover, .types-search span:hover {
     color: #FFFFFF;
     scale: 1.1;
 }
@@ -327,7 +327,7 @@ a:hover {
 }
 
 .text-muted {
-    opacity: 0.4;
+    color: #aaa;
 }
 
 .rating-main {
@@ -422,7 +422,7 @@ select {
 }
 
 
-#film-list-group {
+.film-list-group {
     display: flex;
     justify-content: center;  
     flex-wrap: wrap;
@@ -430,18 +430,19 @@ select {
 }
 
 .film-list-group div {
-    max-width: 200px;  
+    max-width: 180px;
+    min-width: 180px;  
     transition: all 200ms ease-in-out; 
 }
 
 .film-list-group div:hover {
     scale: 1.04;
-
 }
 
 .film-list-group img {
-    max-width: 200px; 
-    height: 280px;
+    max-width: 180px;
+    min-width: 180px; 
+    height: 260px;
     cursor: pointer;
 }
 
@@ -449,7 +450,7 @@ select {
     display: flex;
     justify-content: center;
     cursor: pointer;
-}
+} 
 
 .video-is-undefined {
     text-align: center;
@@ -470,4 +471,15 @@ ion-icon {
     scale: 1.05;
     color: white;
     background-color: rgba(171, 169, 169, 0.2);
+}
+
+.reccomend-message {
+    display: flex;
+    justify-items: center;
+    padding: 5px 2px 25px 2px;
+    font-size: 30px;
+}
+
+.year-search-title {
+    padding-bottom: 15px;
 }

@@ -115,6 +115,7 @@ function renderWeather() {
         errBlock.innerText = state.error;
 
     } else {
+        debugger
         renderEmpty();
     }
 }

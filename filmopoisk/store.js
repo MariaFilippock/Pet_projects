@@ -7,12 +7,12 @@ const Store = {
         favoritesMovieList: [],
         pageType: 'FilmList',
         moviesList: {},
-    },
 
-    sidebarFilter:  {
-        genre: 'приключения',
-        type: 'movie',
-        year: 2025,
+        sidebarFilter:  {
+            genre: 'приключения',
+            type: 'movie',
+            year: '2025',
+        },
     },
 
     GENRES_MAP: {
@@ -165,13 +165,13 @@ const Store = {
     //сохраняем текстовку   
     setSidebarFilter: function (filter) {
         if (filter.type) {
-           this.sidebarFilter.type = filter.type;
+           this.state.sidebarFilter.type = filter.type;
         } 
         if (filter.genre) {
-            this.sidebarFilter.genre = filter.genre;
+            this.state.sidebarFilter.genre = filter.genre;
         }
         if (filter.year) {
-            this.sidebarFilter.year = filter.year;
+            this.state.sidebarFilter.year = filter.year;
         }
         
         this.saveToLocalStorage();  
@@ -183,7 +183,7 @@ function getYearsArray() {
     let nowYear = new Date().getFullYear();
 
     while (nowYear > 1990) {
-        arr.push(nowYear);
+        arr.push(nowYear.toString());
         nowYear--;
     }  
     return arr;
