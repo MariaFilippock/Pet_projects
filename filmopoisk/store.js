@@ -1,17 +1,19 @@
+import { EVERY_YEAR } from "./const.js";
+
 const Store = {
     state: {
         movie: {},
         error: '',
-        isloadedListVisible: false,
+        isLoadedListVisible: false,
         loadedList: [],
         favoritesMovieList: [],
         pageType: 'FilmList',
-        moviesList: {},
+        moviesList: [],
 
         sidebarFilter:  {
             genre: 'приключения',
             type: 'movie',
-            year: '2025',
+            year: EVERY_YEAR,
         },
     },
 
@@ -164,16 +166,7 @@ const Store = {
 
     //сохраняем текстовку   
     setSidebarFilter: function (filter) {
-        if (filter.type) {
-           this.state.sidebarFilter.type = filter.type;
-        } 
-        if (filter.genre) {
-            this.state.sidebarFilter.genre = filter.genre;
-        }
-        if (filter.year) {
-            this.state.sidebarFilter.year = filter.year;
-        }
-        
+        this.state.sidebarFilter = {...this.state.sidebarFilter, ...filter};
         this.saveToLocalStorage();  
     },    
 }

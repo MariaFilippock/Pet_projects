@@ -1,4 +1,5 @@
 import { MOCK_DATA, MOCK_VIDEODATA_MAPPER } from "./mock.js";
+import { EVERY_YEAR } from "./const.js";
 
 export function loadVideoPlayersByMovieId(id) {
     const url = `https://kinobox.tv/api/players?kinopoisk=${id}`;
@@ -56,18 +57,18 @@ export function fetchMovie(filters, page = 1, limit = 14) {
         limit: limit,
         'genres.name' : filters.genre,
         type: filters.type,
-        'rating.kp': '7-10',
+        'rating.kp': '6-10',
     };
-    
-    if (filters.year !== 'every-year') {
-          queryParams.year = filters.year;
+    if (filters.year !== EVERY_YEAR) {
+          queryParams.year = Number(filters.year);
     }
 
     const notNullFields = ['votes.filmCritics', 'name', 'description', 'poster.url', 'alternativeName'];
     const searchParams = new URLSearchParams(queryParams);
-    for (const field of notNullFields) {
-        searchParams.append('notNullFields', field);
-    };
+
+    notNullFields.forEach((field) => {
+        return searchParams.append('notNullFields', field);
+    });
 
     const url = `https://api.kinopoisk.dev/v1.4/movie?` + searchParams.toString();
 
