@@ -12,17 +12,15 @@ const wrapperSidebar = document.getElementById('wrapper-sidebar');
 
 searchBtn.addEventListener('click', handleSearchMovieByName);
 searchInput.addEventListener('input', handleShowAllMovies);
-document.addEventListener('click', (event) => {
+document.addEventListener('click', handleClickOutsideSearchInput);
+navBrand.addEventListener('click', handleShowRandomFilmList);
+
+//убираем выпадающий список с предложениями фильмов
+function handleClickOutsideSearchInput(event) {
     if (formSearch.contains(event.target)) {
         return  
     }
 
-    handleClickOutsideSearchInput();
-});
-navBrand.addEventListener('click', handleShowRandomFilmList);
-
-//убираем выпадающий список с предложениями фильмов
-function handleClickOutsideSearchInput() {
     Store.setIsLoadedListVisible(false);
     renderListOfMovies();
     searchInput.value = '';
@@ -201,19 +199,19 @@ function countHoursAndMinutes(minutes, tvMinutes) {
 }
 
 function renderNavbar() {
-        wrapperSidebar.innerHTML = `
-            <div id="types-search" class="types-search">
+    wrapperSidebar.innerHTML = `
+        <div id="types-search" class="types-search">
             ${createFilmTypesSideBar()}
-            </div>
+        </div>
 
-            <div id="genres-search" class="genres-search">
-                ${createGenresSidebar()}
-            </div>
+        <div id="genres-search" class="genres-search">
+            ${createGenresSidebar()}
+        </div>
 
-            <div id="year-search" class="year-search">
-                <span class="year-search-title">Год выпуска</span>
-                ${createYearsSidebar()}
-            </div>`;
+        <div id="year-search" class="year-search">
+            <span class="year-search-title">Год выпуска</span>
+            ${createYearsSidebar()}
+        </div>`;
 
     const genresSearchContainer = document.getElementById('genres-search');
     const typesSearchContainer = document.getElementById('types-search');

@@ -161,7 +161,7 @@ const Store = {
     },
 
     setIsLoadedListVisible: function(isVisible) {
-        this.state.isloadedListVisible = isVisible;
+        this.state.isLoadedListVisible = isVisible;
     },
 
     //сохраняем текстовку   
