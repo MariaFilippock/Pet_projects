@@ -1,11 +1,58 @@
+import { EVERY_YEAR } from "./const.js";
+
 const Store = {
     state: {
         movie: {},
         error: '',
-        isloadedListVisible: false,
+        isLoadedListVisible: false,
         loadedList: [],
         favoritesMovieList: [],
+        pageType: 'FilmList',
+        moviesList: [],
+
+        sidebarFilter:  {
+            genre: 'приключения',
+            type: 'movie',
+            year: EVERY_YEAR,
+        },
     },
+
+    GENRES_MAP: {
+        adventure: 'приключения',
+        cartoons: 'мультфильм',
+        fantasy: 'фантастика',
+        criminal: 'криминал',
+        thriller: 'триллер',
+        detective: 'детектив',
+        drama: 'драма',
+        comedy: 'комедия',
+        horror: 'ужасы',
+        action: 'боевик',
+        sport: 'спорт',
+        shortFilm: 'короткометражка', 
+    },
+
+    FILM_TYPES: [
+        {
+            id: 'movie',
+            text: 'фильмы',
+            icon: 'film-outline',
+        },
+
+        {
+            id: 'tv-series',
+            text: 'сериалы',
+            icon: 'videocam-outline',
+        },
+
+        {
+            id: 'cartoon',
+            text: 'мультифильмы',
+            icon: 'color-palette-outline',
+        },
+    ],
+
+    years: getYearsArray(),
 
     setListOfMovies: function (responseData) {
         //получаем данные по фильмам по введенным значениям
@@ -13,6 +60,11 @@ const Store = {
             return movieData.rating.kp > 5;
         });
     },
+
+    setPageType: function (pageType) {
+        this.state.pageType = pageType;
+        this.saveToLocalStorage();  
+    }, 
 
     saveToLocalStorage: function () {
         localStorage.setItem('state', JSON.stringify(this.state));
@@ -25,8 +77,12 @@ const Store = {
         }
     },
 
-    updateMovieInfo: function (doc, responseVideoData) {
+    updateMoviesList: function (responseMoviesData) {
+        this.state.moviesList = responseMoviesData;
+        this.saveToLocalStorage();  
+    },
 
+    updateMovieInfo: function (doc, responseVideoData) {
         this.state.movie = {
             poster: doc.poster?.url,
             name: doc.name,
@@ -56,7 +112,6 @@ const Store = {
                 }
             })
         }
-
         this.saveToLocalStorage();
     },
 
@@ -66,7 +121,7 @@ const Store = {
             return player.source === this.state.movie.selectedVideoPlayer;
         })
 
-        return chosenPlayer.iframeUrl;
+        return  chosenPlayer?.iframeUrl;
     },
 
 
@@ -104,9 +159,27 @@ const Store = {
             return favMovie.id === this.state.movie.idMovie;
         });
     },
+
     setIsLoadedListVisible: function(isVisible) {
-        this.state.isloadedListVisible = isVisible;
+        this.state.isLoadedListVisible = isVisible;
     },
+
+    //сохраняем текстовку   
+    setSidebarFilter: function (filter) {
+        this.state.sidebarFilter = {...this.state.sidebarFilter, ...filter};
+        this.saveToLocalStorage();  
+    },    
+}
+
+function getYearsArray() {
+    let arr = [];
+    let nowYear = new Date().getFullYear();
+
+    while (nowYear > 1990) {
+        arr.push(nowYear.toString());
+        nowYear--;
+    }  
+    return arr;
 }
 
 export { Store }
