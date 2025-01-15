@@ -1,6 +1,8 @@
 import { loadVideoPlayersByMovieId, getMoviesByFirstLetters, fetchMovieAndVideoDataByName, fetchMovieAndVideoDataById, fetchMovie, fetchRandomMovies } from "./api.js";
 import { EVERY_YEAR, MAX_VISIBLE_DROPDOWN_FILMS } from "./const.js";
 import { Store } from "./store.js";
+import { renderNavbar } from "./components/Navbar/navbar.js";
+
 
 const searchBtn = document.getElementById('btn-search');
 const searchInput = document.getElementById('search-input');
@@ -8,7 +10,6 @@ const movieCardContainer = document.getElementById('wrapper');
 const formSearch = document.getElementById('form-search');
 const dropdownContainer = document.getElementById('dropdown-container');
 const navBrand = document.getElementById('nav-brand');
-const wrapperSidebar = document.getElementById('wrapper-sidebar');
 
 searchBtn.addEventListener('click', handleSearchMovieByName);
 searchInput.addEventListener('input', handleShowAllMovies);
@@ -33,7 +34,7 @@ function handleYearsNavItemClick(event) {
 
     if (Store.state.sidebarFilter.year !== event.target.value) {
         Store.setSidebarFilter({year: event.target.value === 'Любой' ? EVERY_YEAR : event.target.value});
-        renderNavbar();
+        render();
     }           
 
     fetchMovie(Store.state.sidebarFilter)
@@ -61,7 +62,7 @@ function handleTypesNavItemClick(event) {
     }
     if (Store.state.sidebarFilter.type !== navItemTypeId) {    
         Store.setSidebarFilter({type: navItemTypeId});
-        renderNavbar(); 
+        render(); 
     }
 
     fetchMovie(Store.state.sidebarFilter)
@@ -81,7 +82,7 @@ function handleGenresNavItemClick(event) {
     
     if (Store.state.sidebarFilter.genre !== event.target.textContent) {    
         Store.setSidebarFilter({genre: event.target.textContent});
-        renderNavbar(); 
+        render(); 
     }
 
     fetchMovie(Store.state.sidebarFilter)
@@ -196,23 +197,9 @@ function countHoursAndMinutes(minutes, tvMinutes) {
     } else {
         return `0 мин.`;
     }
-}
+}   
 
-function renderNavbar() {
-    wrapperSidebar.innerHTML = `
-        <div id="types-search" class="types-search">
-            ${createFilmTypesSideBar()}
-        </div>
-
-        <div id="genres-search" class="genres-search">
-            ${createGenresSidebar()}
-        </div>
-
-        <div id="year-search" class="year-search">
-            <span class="year-search-title">Год выпуска</span>
-            ${createYearsSidebar()}
-        </div>`;
-
+function initNavbarEvents() {
     const genresSearchContainer = document.getElementById('genres-search');
     const typesSearchContainer = document.getElementById('types-search');
     const selectYear = document.getElementById('years-film-list');
@@ -221,6 +208,7 @@ function renderNavbar() {
     typesSearchContainer.addEventListener('click', handleTypesNavItemClick);
     selectYear?.addEventListener('change', handleYearsNavItemClick);
 }
+
 
 //отрисовка выпадающего списка и слушатель на клик по одному из выпадающего списка фильму
 function renderListOfMovies() {
@@ -242,7 +230,9 @@ function renderFilmList() {
                 <div>${isMainScreen ? '<span class="reccomend-message">Рекомендуем присмотреться к фильмам из подборки ТОП-250:</span>' : ''}</div>
                 <div id="film-list-group" class="film-list-group">${createFilmList()}</div>
             </div>`;
+}
 
+function initFilmListEvents() {
     const filmListGroup = document.getElementById('film-list-group');
 
     filmListGroup.addEventListener('click', handleFindMovieFromFilmList);
@@ -250,10 +240,13 @@ function renderFilmList() {
 
 function render() {
     renderNavbar();
+    initNavbarEvents();
     if (Store.state.pageType === 'FilmCard') {
         renderMovieCard();
+        initMovieCardEvents();
     } else {
         renderFilmList();
+        initFilmListEvents();
     }
 }
 
@@ -315,7 +308,9 @@ function renderMovieCard() {
             <h4 class = "favorites-title"> Мое избранное </h4>   
                 ${createFavoriteMovieList()}
         </div>`
+}
 
+function initMovieCardEvents() {
     const selectPlayer = document.getElementById('select-player');
     const watchBtn = document.getElementById('watch-btn');
     const addToFavorites = document.getElementById('add-to-favorites');
@@ -339,34 +334,6 @@ function createFilmList() {
         </div>`
     }).join(' ');
 
-}
-
-function createFilmTypesSideBar() {
-    return Store.FILM_TYPES.map((typeObj) => {
-        const isChosen = Store.state.sidebarFilter.type === typeObj.id && Store.state.pageType === 'FilmList';
-
-        return `<div id="${typeObj.id}" class="${isChosen ? 'chosen' : ''}"><span><ion-icon name="${typeObj.icon}"></ion-icon></span>    ${typeObj.text}</div>`;
-    }).join('');
-}
-
-function createGenresSidebar() {
-    let genresArray = Object.keys(Store.GENRES_MAP);
-   
-    return genresArray.map((genre) => {   
-        const isChosen = Store.state.sidebarFilter.genre === Store.GENRES_MAP[genre] && Store.state.pageType === 'FilmList';
-
-        return `<span id='${genre}' class='${ isChosen ? 'chosen' : ''}'>${Store.GENRES_MAP[genre]}</span>`;
-    }).join('');
-}
-
-function createYearsSidebar() {
-    const yearsAll = Store.years.map((yearData) => {
-        return `<option class="year-film-element" value='${yearData}' ${yearData === Store.state.sidebarFilter.year ? 'selected' : ``}>${yearData}</option>`;
-    });
-    return `<select id="years-film-list" class="years-film-list">
-            <option class="year-film-element" value='every-year'>Любой</option>
-            ${yearsAll.join(' ')}
-            </select>`;
 }
 
 function createList() {
