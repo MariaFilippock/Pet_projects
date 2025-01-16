@@ -1,7 +1,7 @@
 import { loadVideoPlayersByMovieId, getMoviesByFirstLetters, fetchMovieAndVideoDataByName, fetchMovieAndVideoDataById, fetchMovie, fetchRandomMovies } from "./api.js";
 import { EVERY_YEAR } from "./const.js";
 import { Store } from "./store.js";
-import { renderNavbar } from "./components/NavBar/navBar.js";
+import { renderSideBar } from "./components/SideBar/sideBar.js";
 import { renderMovieCard } from "./components/MovieCard/movieCard.js";
 import { renderFilmList } from "./components/MovieList/movieList.js";
 import { renderDropdownMovieList } from "./components/DropdownMovieList/dropdownMovieList.js";
@@ -34,12 +34,12 @@ function handleYearsNavItemClick(event) {
         return
     }
 
-    if (Store.state.sidebarFilter.year !== event.target.value) {
-        Store.setSidebarFilter({year: event.target.value === 'Любой' ? EVERY_YEAR : event.target.value});
+    if (Store.state.sideBarFilter.year !== event.target.value) {
+        Store.setSideBarFilter({year: event.target.value === 'Любой' ? EVERY_YEAR : event.target.value});
         render();
     }           
 
-    fetchMovie(Store.state.sidebarFilter)
+    fetchMovie(Store.state.sideBarFilter)
         .then((responseMoviesData) => {
             Store.setPageType('FilmList');
             Store.updateMoviesList(responseMoviesData.docs);
@@ -62,12 +62,12 @@ function handleTypesNavItemClick(event) {
     if (navItemTypeId === document.getElementById('types-search').id) {
         return
     }
-    if (Store.state.sidebarFilter.type !== navItemTypeId) {    
-        Store.setSidebarFilter({type: navItemTypeId});
+    if (Store.state.sideBarFilter.type !== navItemTypeId) {    
+        Store.setSideBarFilter({type: navItemTypeId});
         render(); 
     }
 
-    fetchMovie(Store.state.sidebarFilter)
+    fetchMovie(Store.state.sideBarFilter)
         .then((responseMoviesData) => {
             Store.setPageType('FilmList');
             Store.updateMoviesList(responseMoviesData.docs);
@@ -82,12 +82,12 @@ function handleGenresNavItemClick(event) {
         return
     }
     
-    if (Store.state.sidebarFilter.genre !== event.target.textContent) {    
-        Store.setSidebarFilter({genre: event.target.textContent});
+    if (Store.state.sideBarFilter.genre !== event.target.textContent) {    
+        Store.setSideBarFilter({genre: event.target.textContent});
         render(); 
     }
 
-    fetchMovie(Store.state.sidebarFilter)
+    fetchMovie(Store.state.sideBarFilter)
         .then((responseMoviesData) => {
             Store.setPageType('FilmList');
             Store.updateMoviesList(responseMoviesData.docs);
@@ -183,7 +183,7 @@ function handleClickFavorites() {
     render();
 }
 
-function initNavbarEvents() {
+function initSideBarEvents() {
     const genresSearchContainer = document.getElementById('genres-search');
     const typesSearchContainer = document.getElementById('types-search');
     const selectYear = document.getElementById('years-film-list');
@@ -200,8 +200,8 @@ function initFilmListEvents() {
 }
 
 function render() {
-    renderNavbar();
-    initNavbarEvents();
+    renderSideBar();
+    initSideBarEvents();
     if (Store.state.pageType === 'FilmCard') {
         renderMovieCard();
         initMovieCardEvents();
@@ -227,6 +227,8 @@ function initMovieCardEvents() {
     genresList?.addEventListener('click', handleGenresNavItemClick);
 }
 
-Store.initStateFromLocalStorage();
-render();
 
+export function startApp() {
+    Store.initStateFromLocalStorage();
+    render();
+}
