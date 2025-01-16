@@ -10,7 +10,7 @@ const Store = {
         pageType: 'FilmList',
         moviesList: [],
 
-        sidebarFilter:  {
+        sideBarFilter:  {
             genre: 'приключения',
             type: 'movie',
             year: EVERY_YEAR,
@@ -165,8 +165,8 @@ const Store = {
     },
 
     //сохраняем текстовку   
-    setSidebarFilter: function (filter) {
-        this.state.sidebarFilter = {...this.state.sidebarFilter, ...filter};
+    setSideBarFilter: function (filter) {
+        this.state.sideBarFilter = {...this.state.sideBarFilter, ...filter};
         this.saveToLocalStorage();  
     },    
 }
