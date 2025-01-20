@@ -15,6 +15,8 @@ const Store = {
             type: 'movie',
             year: EVERY_YEAR,
         },
+
+        isLoading: false,
     },
 
     GENRES_MAP: {
@@ -154,13 +156,13 @@ const Store = {
         this.state.movie.selectedVideoPlayer = value;    
     },
 
-    isFavoriteMovie: function() {
+    isFavoriteMovie: function () {
         return this.state.favoritesMovieList.some((favMovie) => {
             return favMovie.id === this.state.movie.idMovie;
         });
     },
 
-    setIsLoadedListVisible: function(isVisible) {
+    setIsLoadedListVisible: function (isVisible) {
         this.state.isLoadedListVisible = isVisible;
     },
 
@@ -168,7 +170,13 @@ const Store = {
     setSideBarFilter: function (filter) {
         this.state.sideBarFilter = {...this.state.sideBarFilter, ...filter};
         this.saveToLocalStorage();  
-    },    
+    },  
+    
+    setIsLoading: function (isLoading) {
+        // debugger
+        this.state.isLoading = isLoading;
+    },
+
 }
 
 function getYearsArray() {

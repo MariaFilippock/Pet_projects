@@ -11,11 +11,17 @@ const searchBtn = document.getElementById('btn-search');
 const searchInput = document.getElementById('search-input');
 const formSearch = document.getElementById('form-search');
 const navBrand = document.getElementById('nav-brand');
+const loader = document.getElementById('preloader-wrapper');
 
 searchBtn.addEventListener('click', handleSearchMovieByName);
 searchInput.addEventListener('input', handleShowDropdownMovieList);
 document.addEventListener('click', handleClickOutsideSearchInput);
 navBrand.addEventListener('click', handleShowRandomFilmList);
+
+function renderLoader() {
+    return Store.state.isLoading ?  loader.classList.remove('hidden') : loader.classList.add('hidden');
+
+}
 
 //убираем выпадающий список с предложениями фильмов
 function handleClickOutsideSearchInput(event) {
@@ -35,23 +41,30 @@ function handleYearsNavItemClick(event) {
     }
 
     if (Store.state.sideBarFilter.year !== event.target.value) {
-        Store.setSideBarFilter({year: event.target.value === 'Любой' ? EVERY_YEAR : event.target.value});
-        render();
-    }           
+        Store.setSideBarFilter({year: event.target.value === 'Любой' ? EVERY_YEAR : event.target.value});     
+    }  
+
+    Store.setIsLoading(true);
+    render();         
 
     fetchMovie(Store.state.sideBarFilter)
         .then((responseMoviesData) => {
             Store.setPageType('FilmList');
             Store.updateMoviesList(responseMoviesData.docs);
+            Store.setIsLoading(false);
             render();
         });
 }
 
 function handleShowRandomFilmList() {
+    Store.setIsLoading(true);
+    render();
+
     fetchRandomMovies()
         .then((responseMoviesData) => {
             Store.setPageType('StartList');
             Store.updateMoviesList(responseMoviesData.docs);
+            Store.setIsLoading(false);
             render();
         })
 }
@@ -63,14 +76,17 @@ function handleTypesNavItemClick(event) {
         return
     }
     if (Store.state.sideBarFilter.type !== navItemTypeId) {    
-        Store.setSideBarFilter({type: navItemTypeId});
-        render(); 
+        Store.setSideBarFilter({type: navItemTypeId}); 
     }
+
+    Store.setIsLoading(true);
+    render();
 
     fetchMovie(Store.state.sideBarFilter)
         .then((responseMoviesData) => {
             Store.setPageType('FilmList');
             Store.updateMoviesList(responseMoviesData.docs);
+            Store.setIsLoading(false);
             render();
     })
 }
@@ -84,20 +100,22 @@ function handleGenresNavItemClick(event) {
     
     if (Store.state.sideBarFilter.genre !== event.target.textContent) {    
         Store.setSideBarFilter({genre: event.target.textContent});
-        render(); 
     }
+
+    Store.setIsLoading(true);
+    render(); 
 
     fetchMovie(Store.state.sideBarFilter)
         .then((responseMoviesData) => {
             Store.setPageType('FilmList');
             Store.updateMoviesList(responseMoviesData.docs);
+            Store.setIsLoading(false);
             render();
         })
 }
 
 function handleFindMovieFromFilmList(event) {
     let parentNode = event.target.closest('.film-list-element');
-    console.log(event.target);
     onCardClick(parentNode.id);
 }
 
@@ -125,6 +143,9 @@ function initDropdownMovieListEvent() {
 
 //поиск данных по фильму из выпадающего списка в поиске
 function handleFindMovieIdAtDropdownList(event) {
+    Store.setIsLoading(true);
+    render();
+
     let parentNode = event.target.closest('.dropdown-movie-item');
     let parentNodeID = Number(parentNode.id);
 
@@ -133,6 +154,7 @@ function handleFindMovieIdAtDropdownList(event) {
             Store.updateMovieInfo(Store.getVideoPlayerByID(parentNodeID), responseVideoData);
             //сеттер, где определяем тип страницы для отрисовки
             Store.setPageType('FilmCard');
+            Store.setIsLoading(false);
             render();
         })
 }
@@ -144,10 +166,14 @@ function handleSearchMovieByName(event) {
         return;
     }
 
+    Store.setIsLoading(true);
+    render();
+
     fetchMovieAndVideoDataByName(searchInput.value)
         .then(([doc, responseVideoData]) => {
             Store.updateMovieInfo(doc, responseVideoData);
             Store.setPageType('FilmCard');
+            Store.setIsLoading(false);
             render();
         })
 
@@ -161,10 +187,14 @@ function handleFindMovieIdAtFavoriteList(event) {
 }
 
 function onCardClick(movieId) {
+    Store.setIsLoading(true);
+    render();
+
     fetchMovieAndVideoDataById(movieId)
         .then(([responseData, responseVideoData]) => {
             Store.updateMovieInfo(responseData, responseVideoData);
             Store.setPageType('FilmCard');
+            Store.setIsLoading(false);
             render();
         })
 }
@@ -200,12 +230,14 @@ function initFilmListEvents() {
 }
 
 function render() {
+    renderLoader();
     renderSideBar();
     initSideBarEvents();
     if (Store.state.pageType === 'FilmCard') {
         renderMovieCard();
         initMovieCardEvents();
     } else {
+        // renderPagination();
         renderFilmList();
         initFilmListEvents();
     }
@@ -230,5 +262,6 @@ function initMovieCardEvents() {
 
 export function startApp() {
     Store.initStateFromLocalStorage();
+    Store.setIsLoading(false);
     render();
 }
