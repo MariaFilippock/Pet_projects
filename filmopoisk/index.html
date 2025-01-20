@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="film.css">
+    <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="components/SideBar/sideBar.css">
     <link rel="stylesheet" href="components/MovieCard/movieCard.css">
     <link rel="stylesheet" href="components/MovieList/movieList.css">
@@ -18,7 +18,10 @@
 </head>
 
 <body>
-    <nav class="navbar">
+    <div  id="preloader-wrapper" class="preloader-wrapper" >
+        <div id="preloader"></div>
+    </div>
+    <nav class="header">
         <div class="search-container">
             <div href="#" class="nav-brand" id="nav-brand">Фильмопоиск</div>
             <div class="form-search" id ="form-search">
@@ -31,11 +34,10 @@
 
     <div class="container">
 
-        <div id="wrapper-sidebar" class="wrapper-sidebar">
-           
-        </div>
+        <div id="wrapper-sidebar" class="wrapper-sidebar"></div>
 
         <div id="wrapper" class="wrapper"></div>
+        
     </div>
 
     <script type="module" src="./index.js"></script>
