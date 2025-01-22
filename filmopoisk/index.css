@@ -9,7 +9,6 @@ body {
     background-color: #000000;
     color: #ffffff;
     overflow-x: visible;
-    min-width: 280px;
 }
 
 img {
@@ -48,14 +47,14 @@ a:hover {
     margin: 0 auto;
     max-width: 100%;
     padding-top: 100px;
-    padding-bottom: 100px;
+    padding-bottom: 80px;
     display: flex;
 }
 
 .wrapper {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     flex: 1;
     gap: 20px;
     padding: 5px 35px 5px 35px;

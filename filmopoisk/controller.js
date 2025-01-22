@@ -19,14 +19,14 @@ document.addEventListener('click', handleClickOutsideSearchInput);
 navBrand.addEventListener('click', handleShowRandomFilmList);
 
 function renderLoader() {
-    return Store.state.isLoading ?  loader.classList.remove('hidden') : loader.classList.add('hidden');
+    return Store.state.isLoading ? loader.classList.remove('hidden') : loader.classList.add('hidden');
 
 }
 
 //убираем выпадающий список с предложениями фильмов
 function handleClickOutsideSearchInput(event) {
     if (formSearch.contains(event.target)) {
-        return  
+        return
     }
 
     Store.setIsLoadedListVisible(false);
@@ -41,14 +41,16 @@ function handleYearsNavItemClick(event) {
     }
 
     if (Store.state.sideBarFilter.year !== event.target.value) {
-        Store.setSideBarFilter({year: event.target.value === 'Любой' ? EVERY_YEAR : event.target.value});     
-    }  
+        Store.setSideBarFilter({ year: event.target.value === 'Любой' ? EVERY_YEAR : event.target.value });
+    }
 
+    Store.setPageNumber(1);
     Store.setIsLoading(true);
-    render();         
+    render();
 
-    fetchMovie(Store.state.sideBarFilter)
+    fetchMovie(Store.state.sideBarFilter, Store.state.pagination.chosenPage)
         .then((responseMoviesData) => {
+            Store.setPagesQuantity(responseMoviesData.pages);
             Store.setPageType('FilmList');
             Store.updateMoviesList(responseMoviesData.docs);
             Store.setIsLoading(false);
@@ -57,11 +59,13 @@ function handleYearsNavItemClick(event) {
 }
 
 function handleShowRandomFilmList() {
+    Store.setPageNumber(1);
     Store.setIsLoading(true);
     render();
 
-    fetchRandomMovies()
+    fetchRandomMovies(Store.state.pagination.chosenPage)
         .then((responseMoviesData) => {
+            Store.setPagesQuantity(responseMoviesData.pages);
             Store.setPageType('StartList');
             Store.updateMoviesList(responseMoviesData.docs);
             Store.setIsLoading(false);
@@ -75,38 +79,17 @@ function handleTypesNavItemClick(event) {
     if (navItemTypeId === document.getElementById('types-search').id) {
         return
     }
-    if (Store.state.sideBarFilter.type !== navItemTypeId) {    
-        Store.setSideBarFilter({type: navItemTypeId}); 
+    if (Store.state.sideBarFilter.type !== navItemTypeId) {
+        Store.setSideBarFilter({ type: navItemTypeId });
     }
 
+    Store.setPageNumber(1);
     Store.setIsLoading(true);
     render();
 
-    fetchMovie(Store.state.sideBarFilter)
+    fetchMovie(Store.state.sideBarFilter, Store.state.pagination.chosenPage)
         .then((responseMoviesData) => {
-            Store.setPageType('FilmList');
-            Store.updateMoviesList(responseMoviesData.docs);
-            Store.setIsLoading(false);
-            render();
-    })
-}
-
-function handleGenresNavItemClick(event) { 
-    //проверка для клика по нужному элементу
-    const genresSearchContainerId = document.getElementById('genres-search')?.id;
-    if (event.target.id === genresSearchContainerId) {
-        return
-    }
-    
-    if (Store.state.sideBarFilter.genre !== event.target.textContent) {    
-        Store.setSideBarFilter({genre: event.target.textContent});
-    }
-
-    Store.setIsLoading(true);
-    render(); 
-
-    fetchMovie(Store.state.sideBarFilter)
-        .then((responseMoviesData) => {
+            Store.setPagesQuantity(responseMoviesData.pages);
             Store.setPageType('FilmList');
             Store.updateMoviesList(responseMoviesData.docs);
             Store.setIsLoading(false);
@@ -114,9 +97,94 @@ function handleGenresNavItemClick(event) {
         })
 }
 
+function handleGenresNavItemClick(event) {
+    //проверка для клика по нужному элементу
+    const genresSearchContainerId = document.getElementById('genres-search')?.id;
+    if (event.target.id === genresSearchContainerId) {
+        return
+    }
+
+    if (Store.state.sideBarFilter.genre !== event.target.textContent) {
+        Store.setSideBarFilter({ genre: event.target.textContent });
+    }
+
+    Store.setPageNumber(1);
+    Store.setIsLoading(true);
+    render();
+
+    fetchMovie(Store.state.sideBarFilter, Store.state.pagination.chosenPage)
+        .then((responseMoviesData) => {
+            Store.setPagesQuantity(responseMoviesData.pages);
+            Store.setPageType('FilmList');
+            Store.updateMoviesList(responseMoviesData.docs);
+            Store.setIsLoading(false);
+            render();
+        });
+}
+
+//пагинация
+function handlePageClick(event) {
+    let pageID = event.target.id;
+
+    if (!pageID) {
+        return
+    }
+
+    Store.setPageNumber(pageID);
+    Store.setIsLoading(true);
+    render();
+
+    const request = Store.state.pageType === 'StartList' ? fetchRandomMovies(Store.state.pagination.chosenPage) :
+        fetchMovie(Store.state.sideBarFilter, Store.state.pagination.chosenPage);
+
+    request.then((responseMoviesData) => {
+        Store.updateMoviesList(responseMoviesData.docs);
+        Store.setIsLoading(false);
+        render();
+    });
+}
+
 function handleFindMovieFromFilmList(event) {
     let parentNode = event.target.closest('.film-list-element');
     onCardClick(parentNode.id);
+}
+
+function handleNextPageClick() {
+    if (Store.state.pagination.chosenPage < Store.state.pagination.pages) {
+        Store.setPageNumber(Store.state.pagination.chosenPage+1);
+    }
+
+    Store.setIsLoading(true);
+    render();
+
+    const request = Store.state.pageType === 'StartList' ? fetchRandomMovies(Store.state.pagination.chosenPage) :
+        fetchMovie(Store.state.sideBarFilter, Store.state.pagination.chosenPage);
+
+    request.then((responseMoviesData) => {
+        Store.updateMoviesList(responseMoviesData.docs);
+        Store.setIsLoading(false);
+        render();
+    });
+
+}
+
+function handlePreviousPageClick() {
+    if (Store.state.pagination.chosenPage > 1) {
+        Store.setPageNumber(Store.state.pagination.chosenPage-1);    
+    }
+
+    Store.setIsLoading(true);
+    render();
+
+    const request = Store.state.pageType === 'StartList' ? fetchRandomMovies(Store.state.pagination.chosenPage) :
+        fetchMovie(Store.state.sideBarFilter, Store.state.pagination.chosenPage);
+
+    request.then((responseMoviesData) => {
+        Store.updateMoviesList(responseMoviesData.docs);
+        Store.setIsLoading(false);
+        render();
+    });
+    
 }
 
 function handleShowDropdownMovieList(event) {
@@ -225,8 +293,15 @@ function initSideBarEvents() {
 
 function initFilmListEvents() {
     const filmListGroup = document.getElementById('film-list-group');
+    const paginationGroup = document.getElementById('page-container');
+    const nextPage = document.getElementById('next-page');
+    const previousPage = document.getElementById('previous-page');
 
     filmListGroup.addEventListener('click', handleFindMovieFromFilmList);
+    paginationGroup.addEventListener('click', handlePageClick);
+    nextPage.addEventListener('click', handleNextPageClick);
+    previousPage.addEventListener('click', handlePreviousPageClick);
+
 }
 
 function render() {
@@ -237,7 +312,6 @@ function render() {
         renderMovieCard();
         initMovieCardEvents();
     } else {
-        // renderPagination();
         renderFilmList();
         initFilmListEvents();
     }
