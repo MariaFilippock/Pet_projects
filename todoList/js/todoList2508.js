@@ -2,19 +2,21 @@ const TaskInputForm = document.querySelector('#form');
 const TaskInput = document.querySelector('.createTask_input');
 const ButtonCreateTask = document.querySelector('.createTask_btn');
 const taskList = document.querySelector('#taskList');
-const favoritesTasksBtn = document.querySelector('.favorites');
-const allTasksBtn = document.querySelector('.all');
-const doneTasksBtn = document.querySelector('.completed');
-
 
 TaskInputForm.addEventListener('submit', handleAddTasks);
 ButtonCreateTask.addEventListener('click', handleAddTasks);
 taskList.addEventListener('click', deleteTask);
 taskList.addEventListener('click', doneTask);
 taskList.addEventListener('click', addToFavorites);
+
+const favoritesTasksBtn = document.querySelector('.favorites');
+const allTasksBtn = document.querySelector('.all');
+const doneTasksBtn = document.querySelector('.completed');
+
 favoritesTasksBtn.addEventListener('click', handleFavoritesFilterClick);
 allTasksBtn.addEventListener('click', handleAllTasksFilterClick);
 doneTasksBtn.addEventListener('click', handleDoneFilterClick);
+
 
 function handleFavoritesFilterClick() {
     state.filter = 'favorites';
@@ -25,8 +27,6 @@ function handleFavoritesFilterClick() {
     saveToLocalStorage();
     renderTasks();
     renderPagination();
-
-
 }
 
 function handleAllTasksFilterClick() {
@@ -38,8 +38,8 @@ function handleAllTasksFilterClick() {
     saveToLocalStorage();
     renderTasks();
     renderPagination();
-
 }
+
 
 function handleDoneFilterClick() {
     state.filter = 'completed';
@@ -50,8 +50,8 @@ function handleDoneFilterClick() {
     saveToLocalStorage();
     renderTasks();
     renderPagination();
-
 }
+
 
 const rowsPerPage = 5;
 
@@ -67,7 +67,6 @@ if (localStorage.getItem('state')) {
     state = JSON.parse(localStorage.getItem('state'));
     renderTasks();
     renderPagination();
-
 }
 
 function handleAddTasks(event) {
@@ -90,7 +89,6 @@ function handleAddTasks(event) {
 
     renderTasks();
     renderPagination();
-
     saveToLocalStorage();
 
     TaskInput.value = '';
@@ -100,9 +98,7 @@ function handleAddTasks(event) {
 function deleteTask(event) {
     if (event.target.dataset.action !== 'delete') return;
 
-
     let parentNode = event.target.closest('.list_item');
-
     let id = Number(parentNode.id);
 
     state.tasks = state.tasks.filter((el) => el.id !== id);
@@ -157,23 +153,21 @@ function saveToLocalStorage() {
 }
 
 
-
 function sortLists() {
     let todos = [];
-     if (state.filter === 'completed') {
-            todos = state.tasks.filter((el) => {
-                return el.done;
-            })
-        } else if (state.filter === 'favorites') {
-            todos = state.tasks.filter((el) => {
-                return el.favorites;
-            })
-        } else if (state.filter === 'all') {
-            todos = state.tasks;
-        }
-     return todos;
+    if (state.filter === 'completed') {
+        todos = state.tasks.filter((el) => {
+            return el.done;
+        })
+    } else if (state.filter === 'favorites') {
+        todos = state.tasks.filter((el) => {
+            return el.favorites;
+        })
+    } else if (state.filter === 'all') {
+        todos = state.tasks;
+    }
+    return todos;
 }
-
 
 
 function renderTasks() {
@@ -211,6 +205,8 @@ function renderTasks() {
 
         taskList.insertAdjacentHTML('beforeend', taskHTML);
     });
+
+
     changeStatus();
 }
 

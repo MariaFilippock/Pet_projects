@@ -17,6 +17,11 @@ const Store = {
         },
 
         isLoading: false,
+
+        pagination: {
+            chosenPage: 1,
+            pages: 1,
+        },
     },
 
     GENRES_MAP: {
@@ -173,8 +178,15 @@ const Store = {
     },  
     
     setIsLoading: function (isLoading) {
-        // debugger
         this.state.isLoading = isLoading;
+    },
+
+    setPagesQuantity: function (pages) {
+        this.state.pagination.pages = pages;
+    },
+
+    setPageNumber: function (page) {
+        this.state.pagination.chosenPage = Number(page);
     },
 
 }
@@ -189,5 +201,6 @@ function getYearsArray() {
     }  
     return arr;
 }
+
 
 export { Store }

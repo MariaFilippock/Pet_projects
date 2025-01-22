@@ -51,7 +51,7 @@ export function getMoviesByFirstLetters(name, page = 1, limit = 30) {
     })
 }
 
-export function fetchMovie(filters, page = 1, limit = 14) {
+export function fetchMovie(filters, page, limit = 14) {
     const queryParams = {
         page: page,
         limit: limit,
@@ -80,7 +80,7 @@ export function fetchMovie(filters, page = 1, limit = 14) {
 }
 
 //получение списка топ-фильмов по клику на "фильмопоиск"
-export function fetchRandomMovies(page = 1, limit = 14) {
+export function fetchRandomMovies(page, limit = 14) {
     const url = `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=${limit}&notNullFields=votes.filmCritics&notNullFields=name&notNullFields=description&notNullFields=poster.url&notNullFields=top250&notNullFields=alternativeName&rating.kp=8-10&rating.imdb=8-10&votes.filmCritics=1-6666666`;
 
     return fetch(url, {
