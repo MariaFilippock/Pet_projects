@@ -1,5 +1,5 @@
 import { Store } from "../../store.js";
-import { VISIBLE_PAGINATION, MAX_PAGES_COUNT, CORNER_PAGE_COUNT } from "../../const.js";
+import { MAX_PAGES_COUNT, CORNER_PAGE_COUNT } from "../../const.js";
 
 const Content = document.getElementById('wrapper');
 
@@ -27,20 +27,22 @@ function createFilmList() {
             <span>${listItem.name}</span>       
         </div>`
     }).join(' ');
-
 }
 
+
 function calculatePagination() {
+    let pagesCount = Store.state.pagination.pages;
+    let chosenPage = Store.state.pagination.chosenPage;
     let pagination = [];
-    if (Store.state.pagination.pages < MAX_PAGES_COUNT) {
-        pagination = [...Array(Store.state.pagination.pages).keys()].map(i=>i+1);
-    } else if (Store.state.pagination.chosenPage <= CORNER_PAGE_COUNT) {
-        pagination = [...Array(CORNER_PAGE_COUNT+1).keys()].map(i=>i+1);
-        pagination.push('...', Store.state.pagination.pages);
-    } else if (Store.state.pagination.pages-Store.state.pagination.chosenPage < CORNER_PAGE_COUNT) {
-        pagination = [1, '...', Store.state.pagination.pages-4, Store.state.pagination.pages-3, Store.state.pagination.pages-2, Store.state.pagination.pages-1, Store.state.pagination.pages];
+    if (pagesCount < MAX_PAGES_COUNT) {
+        pagination = [...Array(pagesCount).keys()].map(i=>i+1);
+    } else if (chosenPage < CORNER_PAGE_COUNT) {
+        pagination = [...Array(CORNER_PAGE_COUNT).keys()].map(i=>i+1);
+        pagination.push('...', pagesCount);
+    } else if (pagesCount-chosenPage < CORNER_PAGE_COUNT-1) {
+        pagination = [1, '...', pagesCount-4, pagesCount-3, pagesCount-2, pagesCount-1, pagesCount];
     } else {
-        pagination = [1, '...', Store.state.pagination.chosenPage-1, Store.state.pagination.chosenPage, Store.state.pagination.chosenPage+1, '...', Store.state.pagination.pages];
+        pagination = [1, '...', chosenPage-1, chosenPage, chosenPage+1, '...', pagesCount];
     }
     return pagination;
 }
@@ -48,9 +50,9 @@ function calculatePagination() {
 
 function createPagination() {
     const pageArray = calculatePagination();
-    // debugger
+
     const allPages =  pageArray.map((pageEl) => { 
-        return `<span id='${pageEl}' class='page ${Store.state.pagination.chosenPage === pageEl ? 'active' : ''}'>${pageEl}</span>`
+        return `<span id='${pageEl === '...' ? '' : pageEl}' class='page ${Store.state.pagination.chosenPage === pageEl ? 'active' : ''}'>${pageEl}</span>`
     });
 
     return allPages.join('')

@@ -131,17 +131,8 @@ function handlePageClick(event) {
     }
 
     Store.setPageNumber(pageID);
-    Store.setIsLoading(true);
-    render();
-
-    const request = Store.state.pageType === 'StartList' ? fetchRandomMovies(Store.state.pagination.chosenPage) :
-        fetchMovie(Store.state.sideBarFilter, Store.state.pagination.chosenPage);
-
-    request.then((responseMoviesData) => {
-        Store.updateMoviesList(responseMoviesData.docs);
-        Store.setIsLoading(false);
-        render();
-    });
+    //загружаю новую страницу со списком фильмов при клике на номер страницы
+    loadByPage();
 }
 
 function handleFindMovieFromFilmList(event) {
@@ -149,30 +140,24 @@ function handleFindMovieFromFilmList(event) {
     onCardClick(parentNode.id);
 }
 
-function handleNextPageClick() {
-    if (Store.state.pagination.chosenPage < Store.state.pagination.pages) {
-        Store.setPageNumber(Store.state.pagination.chosenPage+1);
-    }
-
-    Store.setIsLoading(true);
-    render();
-
-    const request = Store.state.pageType === 'StartList' ? fetchRandomMovies(Store.state.pagination.chosenPage) :
-        fetchMovie(Store.state.sideBarFilter, Store.state.pagination.chosenPage);
-
-    request.then((responseMoviesData) => {
-        Store.updateMoviesList(responseMoviesData.docs);
-        Store.setIsLoading(false);
-        render();
-    });
-
-}
-
 function handlePreviousPageClick() {
     if (Store.state.pagination.chosenPage > 1) {
         Store.setPageNumber(Store.state.pagination.chosenPage-1);    
     }
+    //загружаю новую страницу со списком фильмов при клике на номер страницы
+    loadByPage(); 
+}
 
+function handleNextPageClick() {
+    if (Store.state.pagination.chosenPage < Store.state.pagination.pages) {
+        Store.setPageNumber(Store.state.pagination.chosenPage+1);
+    }
+    //загружаю новую страницу со списком фильмов при клике на номер страницы
+    loadByPage();
+}
+
+//загружаю новую страницу со списком фильмов при клике на номер страницы
+function loadByPage() {
     Store.setIsLoading(true);
     render();
 
@@ -184,7 +169,6 @@ function handlePreviousPageClick() {
         Store.setIsLoading(false);
         render();
     });
-    
 }
 
 function handleShowDropdownMovieList(event) {
@@ -254,6 +238,7 @@ function handleFindMovieIdAtFavoriteList(event) {
     onCardClick(parentNode.id);
 }
 
+
 function onCardClick(movieId) {
     Store.setIsLoading(true);
     render();
@@ -267,6 +252,7 @@ function onCardClick(movieId) {
         })
 }
 
+
 //выбор плеера из выпадающего списка и отрисовка
 function handleSearchPlayerAtSelect(event) {
     Store.setSelectedVideoPlayer(event.target.value);
@@ -274,12 +260,14 @@ function handleSearchPlayerAtSelect(event) {
     render();
 }
 
+
 //клик, чтобы добавить в избранное
 function handleClickFavorites() {
     Store.changeCurrentFavouriteMovie();
     Store.setPageType('FilmCard');
     render();
 }
+
 
 function initSideBarEvents() {
     const genresSearchContainer = document.getElementById('genres-search');
@@ -290,6 +278,7 @@ function initSideBarEvents() {
     typesSearchContainer.addEventListener('click', handleTypesNavItemClick);
     selectYear?.addEventListener('change', handleYearsNavItemClick);
 }
+
 
 function initFilmListEvents() {
     const filmListGroup = document.getElementById('film-list-group');
@@ -304,6 +293,7 @@ function initFilmListEvents() {
 
 }
 
+
 function render() {
     renderLoader();
     renderSideBar();
@@ -316,6 +306,7 @@ function render() {
         initFilmListEvents();
     }
 }
+
 
 function initMovieCardEvents() {
     const selectPlayer = document.getElementById('select-player');
