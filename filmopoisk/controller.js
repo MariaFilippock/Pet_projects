@@ -144,7 +144,7 @@ function handlePreviousPageClick() {
     if (Store.state.pagination.chosenPage > 1) {
         Store.setPageNumber(Store.state.pagination.chosenPage-1);    
     }
-    //загружаю новую страницу со списком фильмов при клике на номер страницы
+    //загружаю новую страницу со списком фильмов при клике на стрелку "назад"
     loadByPage(); 
 }
 
@@ -152,11 +152,11 @@ function handleNextPageClick() {
     if (Store.state.pagination.chosenPage < Store.state.pagination.pages) {
         Store.setPageNumber(Store.state.pagination.chosenPage+1);
     }
-    //загружаю новую страницу со списком фильмов при клике на номер страницы
+    //загружаю новую страницу со списком фильмов при клике на стрелку "вперед"
     loadByPage();
 }
 
-//загружаю новую страницу со списком фильмов при клике на номер страницы
+//загружаю новую страницу со списком фильмов при клике на стрелку "вперед", "назад" или номер страницы
 function loadByPage() {
     Store.setIsLoading(true);
     render();
