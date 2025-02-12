@@ -55,6 +55,5 @@ function createPagination() {
         return `<span id='${pageEl === '...' ? '' : pageEl}' class='page ${Store.state.pagination.chosenPage === pageEl ? 'active' : ''}'>${pageEl}</span>`
     });
 
-    return allPages.join('')
-        
+    return allPages.join('');
 }

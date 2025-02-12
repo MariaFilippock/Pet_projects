@@ -105,7 +105,7 @@ const Store = {
             filmCritics: doc.votes?.filmCritics,
             description: doc.description,
             idMovie: doc.id,
-            selectedVideoPlayer: responseVideoData[1].source,
+            selectedVideoPlayer: responseVideoData[0].source,// TODO сделать привязку к существующему iframeUrl
             isSerial: doc.isSeries,
             seriesLength: doc.seriesLength,
 
@@ -158,7 +158,7 @@ const Store = {
     },
 
     setSelectedVideoPlayer: function (value) {
-        this.state.movie.selectedVideoPlayer = value;    
+        this.state.movie.selectedVideoPlayer = value;
     },
 
     isFavoriteMovie: function () {
