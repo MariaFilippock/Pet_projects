@@ -17,7 +17,6 @@ favoritesTasksBtn.addEventListener('click', handleFavoritesFilterClick);
 allTasksBtn.addEventListener('click', handleAllTasksFilterClick);
 doneTasksBtn.addEventListener('click', handleDoneFilterClick);
 
-
 function handleFavoritesFilterClick() {
     state.filter = 'favorites';
     favoritesTasksBtn.classList.add('section-active');
@@ -40,7 +39,6 @@ function handleAllTasksFilterClick() {
     renderPagination();
 }
 
-
 function handleDoneFilterClick() {
     state.filter = 'completed';
     doneTasksBtn.classList.add('section-active');
@@ -51,7 +49,6 @@ function handleDoneFilterClick() {
     renderTasks();
     renderPagination();
 }
-
 
 const rowsPerPage = 5;
 

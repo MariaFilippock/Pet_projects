@@ -16,8 +16,6 @@ export function loadVideoPlayersByMovieId(id) {
     return fetch(url)
         .then((response) => {
             return response.json();
-        }).then((responseVideoData) => {
-            return responseVideoData;
         })
 }
 
