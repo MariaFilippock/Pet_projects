@@ -1,0 +1,37 @@
+.form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.input {
+    display: flex;
+    font-family: 'Roboto', sans-serif;
+    font-size: 25px;
+    border-radius: 10px;
+    border: 1px solid #CDCDCD;
+    align-items: center;
+    padding: 5px 10px;
+    width: 760px;
+    margin-right: 10px;
+    height: 40px;
+}
+
+.btn {
+    display: flex;
+    border: 1px solid #CDCDCD;
+    font-family: 'Roboto', sans-serif;
+    padding: 5px 10px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in;
+    border-radius: 10px;
+    background-color: #2564cf;
+    color: white;
+    align-items: center;
+    height: 52px;
+
+}
+

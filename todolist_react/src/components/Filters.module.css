@@ -1,0 +1,37 @@
+.filtersList {
+    display: flex;
+    font-size: inherit;
+    font-family: inherit;
+    margin-bottom: 20px;
+    margin-top: 30px;
+}
+
+.filter {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+    margin: 2px;
+    padding: 4px 10px;
+    cursor: pointer;
+    color: #2564cf;
+}
+
+.filter:hover {
+    opacity: 1;
+    transition: opacity 0.2s ease-in;
+    border: 1px solid #CDCDCD;
+    border-radius: 10px;
+    color: white;
+    background-color: #8e8e8e;
+}
+
+.active {
+    opacity: 1;
+    border: 1px solid #CDCDCD;
+    border-radius: 10px;
+    color: white;
+    background-color: #2564cf;
+    padding: 4px 10px;
+}
+

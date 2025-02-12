@@ -1,0 +1,68 @@
+.btn {
+    cursor: pointer;
+    transition: opacity 0.2s ease-in;
+    opacity: 0.5;
+    align-items: center;
+    padding: 2px;
+    margin: 2px;
+    display: flex;
+}
+
+.favorite {
+    transition: opacity 0.2s ease-in;
+}
+
+.favorite:hover {
+    scale: 1.08;
+    color: #f3b20c;
+}
+
+.completed:hover {
+    scale: 1.08;
+    color: forestgreen;
+}
+
+.delete:hover {
+    scale: 1.08;
+    color: red;
+}
+
+.item {
+    display: flex;
+    border: 1px solid #CDCDCD;
+    border-radius: 5px;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 5px;
+}
+
+.title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    padding: 4px;
+}
+
+.btns {
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-self: center;
+}
+
+.btns ion-icon {
+    font-size: 25px;
+}
+
+.done {
+    text-decoration: line-through;
+    color: #8e8e8e;
+}
+
+.gold {
+    color: #f3b20c;
+}
+
+.green {
+    color: forestgreen;
+}
